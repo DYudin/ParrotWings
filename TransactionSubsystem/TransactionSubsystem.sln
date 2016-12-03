@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSubsystem.BL", "TransactionSubsystem.BL.csproj", "{97923919-89FE-4407-9B5A-8F26332C1C35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSubsystem.Console", "..\TransactionSubsystem.Console\TransactionSubsystem.Console.csproj", "{B2B8D44B-C142-4000-9AB7-8F47CA4EFD5E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97923919-89FE-4407-9B5A-8F26332C1C35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97923919-89FE-4407-9B5A-8F26332C1C35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97923919-89FE-4407-9B5A-8F26332C1C35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97923919-89FE-4407-9B5A-8F26332C1C35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2B8D44B-C142-4000-9AB7-8F47CA4EFD5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2B8D44B-C142-4000-9AB7-8F47CA4EFD5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2B8D44B-C142-4000-9AB7-8F47CA4EFD5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2B8D44B-C142-4000-9AB7-8F47CA4EFD5E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

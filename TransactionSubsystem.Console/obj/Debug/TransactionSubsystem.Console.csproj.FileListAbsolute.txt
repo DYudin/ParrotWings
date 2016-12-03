@@ -1,0 +1,12 @@
+C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\bin\Debug\TransactionSubsystem.Console.exe.config
+C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\bin\Debug\TransactionSubsystem.Console.exe
+C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\bin\Debug\TransactionSubsystem.Console.pdb
+C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\bin\Debug\TransactionSubsystem.dll
+C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\bin\Debug\EntityFramework.dll
+C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\bin\Debug\TransactionSubsystem.pdb
+C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\bin\Debug\EntityFramework.xml
+C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\obj\Debug\TransactionSubsystem.Console.csprojResolveAssemblyReference.cache
+C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\obj\Debug\TransactionSubsystem.Console.exe
+C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\obj\Debug\TransactionSubsystem.Console.pdb
+C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\bin\Debug\EntityFramework.SqlServer.xml
