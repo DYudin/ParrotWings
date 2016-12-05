@@ -4,20 +4,23 @@
 
 @Injectable()
 export class NotificationService {
-    private _notifier: any = alert;
+    private _notifier: any;
     constructor() {
     }
 
     printSuccessMessage(message: string) {
 
-        this._notifier.success(message);
+        alert(message);
+        //this._notifier.success(message);
     }
 
     printErrorMessage(message: string) {
-        this._notifier.error(message);
+        alert(message);
+        //this._notifier.error(message);
     }
 
     printConfirmationDialog(message: string, okCallback: () => any) {
+        
         this._notifier.confirm(message, function (e) {
             if (e) {
                 okCallback();

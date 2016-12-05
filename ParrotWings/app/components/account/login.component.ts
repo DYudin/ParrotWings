@@ -6,14 +6,14 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
-    selector: 'albums',
+    selector: 'login',
     templateUrl: './app/components/account/login.component.html'
 })
 export class LoginComponent implements OnInit {
     private _user: User;
 
     constructor(public authService: AuthenticationService,
-        public notificationService: NotificationService,
+        //public notificationService: NotificationService,
         public router: Router) { }
 
     ngOnInit() {
@@ -31,12 +31,12 @@ export class LoginComponent implements OnInit {
             error => console.error('Error: ' + error),
             () => {
                 if (_authenticationResult.Succeeded) {
-                    this.notificationService.printSuccessMessage('Welcome back ' + this._user.Username + '!');
+                    //this.notificationService.printSuccessMessage('Welcome back ' + this._user.Username + '!');
                     localStorage.setItem('user', JSON.stringify(this._user));
                     this.router.navigate(['home']);
                 }
                 else {
-                    this.notificationService.printErrorMessage(_authenticationResult.Message);
+                    //this.notificationService.printErrorMessage(_authenticationResult.Message);
                 }
             });
     };

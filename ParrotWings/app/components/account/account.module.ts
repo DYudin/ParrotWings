@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { DataService } from '../../core/services/data.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { NotificationService } from '../../core/services/notification.service';
+//import { NotificationService } from '../../core/services/notification.service';
 
 import { AccountComponent } from './account.component';
 import { LoginComponent } from './login.component';
@@ -26,8 +26,8 @@ import { accountRouting } from './routes';
 
     providers: [
         DataService,
-        AuthenticationService,
-        NotificationService
+        AuthenticationService
+        //,NotificationService
     ]
 })
 export class AccountModule { }

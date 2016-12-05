@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { Registration } from '../../core/domain/registration';
 import { OperationResult } from '../../core/domain/operationResult';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { NotificationService } from '../../core/services/notification.service';
+//import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
     selector: 'register',
-    providers: [AuthenticationService, NotificationService],
+    providers: [AuthenticationService], //, NotificationService
     templateUrl: './app/components/account/register.component.html'
 })
 export class RegisterComponent implements OnInit {
@@ -15,7 +15,7 @@ export class RegisterComponent implements OnInit {
     private _newUser: Registration;
 
     constructor(public authService: AuthenticationService,
-        public notificationService: NotificationService,
+        //public notificationService: NotificationService,
         public router: Router) { }
 
     ngOnInit() {
@@ -33,11 +33,11 @@ export class RegisterComponent implements OnInit {
             error => console.error('Error: ' + error),
             () => {
                 if (_registrationResult.Succeeded) {
-                    this.notificationService.printSuccessMessage('Dear ' + this._newUser.Username + ', please login with your credentials');
+                    //this.notificationService.printSuccessMessage('Dear ' + this._newUser.Username + ', please login with your credentials');
                     this.router.navigate(['account/login']);
                 }
                 else {
-                    this.notificationService.printErrorMessage(_registrationResult.Message);
+                    //this.notificationService.printErrorMessage(_registrationResult.Message);
                 }
             });
     };

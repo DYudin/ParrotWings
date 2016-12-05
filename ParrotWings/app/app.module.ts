@@ -8,13 +8,14 @@ import { Headers, RequestOptions, BaseRequestOptions } from '@angular/http';
 import { AccountModule } from './components/account/account.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home.component';
+import { TransactionComponent } from './components/transaction.component';
 
 import { routing } from './routes';
 
 import { DataService } from './core/services/data.service';
 import { AuthenticationService } from './core/services/authentication.service';
 //import { UtilityService } from './core/services/utility.service';
-import { NotificationService } from './core/services/notification.service';
+//import { NotificationService } from './core/services/notification.service';
 
 class AppBaseRequestOptions extends BaseRequestOptions {
     headers: Headers = new Headers();
@@ -32,8 +33,8 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         HttpModule,
         routing,
         AccountModule ],
-    declarations: [AppComponent, HomeComponent],
-    providers: [DataService, AuthenticationService, NotificationService,
+    declarations: [AppComponent, HomeComponent, TransactionComponent],
+    providers: [DataService, AuthenticationService, //NotificationService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: RequestOptions, useClass: AppBaseRequestOptions }],
   bootstrap:    [ AppComponent ]
