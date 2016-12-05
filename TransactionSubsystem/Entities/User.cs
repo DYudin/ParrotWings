@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TransactionSubsystem.Entities
 {
@@ -22,10 +19,10 @@ namespace TransactionSubsystem.Entities
         }
 
         public int Id { get; set; }
-
-        public string Name { get; private set; }
-
-        public string Email { get; private set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Salt { get; set; }
+        public string HashedPassword { get; set; }
 
         [NotMapped]
         public Transaction PreparingTransaction { get; set; }

@@ -70,7 +70,10 @@
     <Compile Include="Repositories\Implementation\UserRepository.cs" />
     <Compile Include="Services\Abstract\Interfaces.cs" />
     <Compile Include="Services\Implementation\AmountVerificationService.cs" />
+    <Compile Include="Services\Implementation\AuthenticationService.cs" />
+    <Compile Include="Services\Implementation\SecurityService.cs" />
     <Compile Include="Services\Implementation\TransactionCommitService.cs" />
+    <Compile Include="Services\Implementation\UserProvider.cs" />
     <Compile Include="Services\Implementation\UserVerificationService.cs" />
     <Compile Include="Services\Mock\AuthMock.cs" />
     <Compile Include="Repositories\TransactionSubsystemContext.cs" />

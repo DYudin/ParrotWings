@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using TransactionSubsystem.Entities;
+using TransactionSubsystem.Repositories.Abstract;
 
 namespace Interfaces
 {
@@ -11,8 +13,16 @@ namespace Interfaces
     {
         User CurrentUser { get; }
 
-        bool Login();
+        bool Login(string userName, string password);
     }
+
+    public interface IUserProvider
+    {
+        User CreateUser(string username, string email, string password, int[] roles);
+        User GetUser(int userId);
+    }
+
+
 
     public interface IAmountVerificationService
     {
@@ -22,5 +32,12 @@ namespace Interfaces
     public interface ITransactionCommitService
     {
         void CommitTransaction(Transaction transaction);
+    }
+
+    public interface ISecurityService
+    {
+        string CreateSalt();
+       
+        string EncryptPassword(string password, string salt);
     }
 }

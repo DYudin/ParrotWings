@@ -23,25 +23,7 @@ namespace TransactionSubsystem.Repositories.Implementation
         {
             return _context.Set<T>().AsEnumerable();
         }
-        //public virtual IEnumerable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties)
-        //{
-        //    IQueryable<T> query = _context.Set<T>();
-        //    foreach (var includeProperty in includeProperties)
-        //    {
-        //        query = query.Include(includeProperty);
-        //    }
-        //    return query.AsEnumerable();
-        //}
-
-        //public virtual async Task<IEnumerable<T>> AllIncludingAsync(params Expression<Func<T, object>>[] includeProperties)
-        //{
-        //    IQueryable<T> query = _context.Set<T>();
-        //    foreach (var includeProperty in includeProperties)
-        //    {
-        //        query = query.Include(includeProperty);
-        //    }
-        //    return await query.ToListAsync();
-        //}
+    
         //public T GetSingle(int id)
         //{
         //    return _context.Set<T>().FirstOrDefault(x => x.Id == id);
@@ -52,21 +34,6 @@ namespace TransactionSubsystem.Repositories.Implementation
             return _context.Set<T>().FirstOrDefault(predicate);
         }
 
-        //public T GetSingle(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
-        //{
-        //    IQueryable<T> query = _context.Set<T>();
-        //    foreach (var includeProperty in includeProperties)
-        //    {
-        //        query = query.Include(includeProperty);
-        //    }
-
-        //    return query.Where(predicate).FirstOrDefault();
-        //}
-
-        //public async Task<T> GetSingleAsync(int id)
-        //{
-        //    return await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
-        //}
         public virtual IEnumerable<T> FindBy(Expression<Func<T, bool>> predicate)
         {
             return _context.Set<T>().Where(predicate);

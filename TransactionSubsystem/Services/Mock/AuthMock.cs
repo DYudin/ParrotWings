@@ -18,7 +18,7 @@ namespace TransactionSubsystem.Services.Mock
         }
         public User CurrentUser { get; }
 
-        public bool Login()
+        public bool Login(string login, string password)
         {
             return false;
         }
