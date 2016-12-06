@@ -10,14 +10,14 @@ namespace TransactionSubsystem.Services.Implementation
         private readonly IUserRepository _userRepository;
         public AmountVerificationService(IUserRepository userRepository)
         {
-            if (userRepository == null) throw new ArgumentNullException(nameof(userRepository));
+            if (userRepository == null) throw new ArgumentNullException(("userRepository"));
 
             _userRepository = userRepository;
         }
 
         public bool VerifyAmount(User user, decimal Amount)
         {
-            if (user == null) throw new ArgumentNullException(nameof(user));
+            if (user == null) throw new ArgumentNullException(("user"));
 
             bool result = false;
 

@@ -19,7 +19,7 @@ namespace TransactionSubsystem.Services.Implementation
 
         public User GetUserByName(string userName)
         {
-            if (string.IsNullOrWhiteSpace(userName)) throw new ArgumentException(nameof(userName));
+            if (string.IsNullOrWhiteSpace(userName)) throw new ArgumentException((userName));
 
             return _userRepository.GetSingle(x => x.Name == userName);
         }
@@ -35,7 +35,7 @@ namespace TransactionSubsystem.Services.Implementation
 
             if (existingUser != null)
             {
-                throw new Exception($"User with {email} email is already registered");
+                throw new Exception(string.Format("User with {0} email is already registered", email));
             }
 
             var passwordSalt = _securityService.CreateSalt();

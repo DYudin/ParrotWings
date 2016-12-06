@@ -1,11 +1,59 @@
 ﻿<div class="container">
+    
+<form class="form col-md-12" #transactionForm="ngForm">
 
+    <div class="form-group col-md-6" >
+        <input type="text" class="form-control input-sm" placeholder="Enter name of the user which you want to send money to" [(ngModel)]="_transaction.RecepientName"
+               name="recepient" id="recepient" #recepient="ngModel" required />
+        <div [hidden]="recepient.valid || recepient.untouched" class="alert alert-danger">
+            Recepient name is required
+        </div>
+    </div>
+
+    <div class="form-group col-md-6">
+        <input type="text" class="form-control input-sm" placeholder="Enter amount" [(ngModel)]="_transaction.Amount"
+               name="amount" id="amount" #amount="ngModel" required/>
+        <div [hidden]="amount.valid || amount.untouched" class="alert alert-danger">
+            Amount is required
+        </div>
+    </div>
+    <div class="form-group col-md-3">
+        <button class="btn btn-primary btn-md btn-block" (click)="send()" [disabled]="!transactionForm.form.valid">Send money</button>
+    </div>
+</form>
+    
+      <hr/>
     <div class="row">
+        <table>
+            <tr>
+                <th style="background-color: #e0ffff;">Amount</th>
+                <th style="background-color: #e0ffff;">Recepient name</th>              
+                <th style="background-color: #e0ffff;">Date</th>
+                <th style="background-color: #e0ffff;">Resulting balance</th>
+            </tr>
+
+            <tr *ngFor="let u of _transactions">
+            
+                <td><span>{{u.Amount}}</span></td>
+                <td><span>{{u.RecepientName}}</span></td>               
+                <td><span>{{u.Date}}</span></td>
+                <td><span>{{u.ResultingBalance}}</span></td>
+
+            </tr>       
+        </table>
+        <hr/>
+        <div>
+            <button (click)="getTransactions()" id="btnUserDetails">Load transactions</button>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="row">
         <div class="col-md-9">
             <div class="well text-left">
                 Enter user name which you want to send money to
             </div>
-            <input type="text"/>
+            <input type="text" #user="ngModel" [(ngModel)]="_transaction.RecepientName class="form-control input-sml"/>
             <button type="button" class="buttonCaption" data-dismiss="modal" aria-hidden="true">Verify</button>
         </div>
     </div>
@@ -14,13 +62,13 @@
             <div class="well text-left">
                 Enter amount
             </div>
-            <input type="number"/>
+            <input type="number" #amount="ngModel" [(ngModel)]="_transaction.Amount class="form-control input-sml"/>
         </div>
     </div>
     <hr/>
     <div class="row">
         <div class="col-md-9">
-            <button type="button" class="buttonCaption"  aria-hidden="true">Send</button>
+            <button type="button" class="buttonCaption"  aria-hidden="true" [disabled]="!loginForm.form.valid">Send</button>
         </div>
-    </div>
-</div>
+    </div>-->
+    

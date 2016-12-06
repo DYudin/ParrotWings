@@ -9,7 +9,7 @@ namespace TransactionSubsystem.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             ContextKey = "TransactionSubsystem.Repositories.TransactionSubsystemContext";
         }
 

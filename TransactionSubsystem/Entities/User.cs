@@ -11,8 +11,8 @@ namespace TransactionSubsystem.Entities
         }
         public User(string name, string email)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
-            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException(nameof(email));
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException((name));
+            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException((email));
 
             Name = name;
             Email = email;

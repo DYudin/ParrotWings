@@ -22,10 +22,10 @@ namespace TransactionSubsystem
             IAmountVerificationService amountVerificationService,
             ITransactionService transactionService)
         {
-            if (authMock == null) throw new ArgumentNullException(nameof(authMock));
-            if (userProvider == null) throw new ArgumentNullException(nameof(userProvider));
-            if (amountVerificationService == null) throw new ArgumentNullException(nameof(amountVerificationService));
-            if (transactionService == null) throw new ArgumentNullException(nameof(transactionService));
+            if (authMock == null) throw new ArgumentNullException(("authMock"));
+            if (userProvider == null) throw new ArgumentNullException(("userProvider"));
+            if (amountVerificationService == null) throw new ArgumentNullException(("amountVerificationService"));
+            if (transactionService == null) throw new ArgumentNullException(("transactionService"));
 
             _authMock = authMock;
             _userProvider = userProvider;

@@ -4,9 +4,16 @@
     Date: Date;
     ResultingBalance: number;
 
-    //constructor(username: string,
-    //    password: string) {
-    //    this.Username = username;
-    //    this.Password = password;
-    //}
+    constructor(
+		//amount: number,
+		//recepientName: string,
+		//date: Date,
+		//resultingBalance: number
+		) 
+		{
+        //this.Amount = amount;
+        //this.RecepientName = recepientName;
+		//this.Date = date;
+        //this.ResultingBalance = resultingBalance;
+    }
 }

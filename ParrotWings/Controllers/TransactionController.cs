@@ -21,10 +21,10 @@ namespace ParrotWings.Controllers
             IAmountVerificationService amountVerificationService,
             ITransactionService transactionService)
         {
-            if (_authenticationService == null) throw new ArgumentNullException(nameof(authenticationService));
-            if (userProvider == null) throw new ArgumentNullException(nameof(userProvider));
-            if (amountVerificationService == null) throw new ArgumentNullException(nameof(amountVerificationService));
-            if (transactionService == null) throw new ArgumentNullException(nameof(transactionService));
+            if (authenticationService == null) throw new ArgumentNullException(("authenticationService"));
+            if (userProvider == null) throw new ArgumentNullException(("userProvider"));
+            if (amountVerificationService == null) throw new ArgumentNullException(("amountVerificationService"));
+            if (transactionService == null) throw new ArgumentNullException(("transactionService"));
 
             _authenticationService = authenticationService;
             _userProvider = userProvider;
@@ -33,6 +33,7 @@ namespace ParrotWings.Controllers
         }
 
         //GET: /transaction/alltransactions
+        [Route("api/transactions")]
         [HttpGet]
         public IHttpActionResult GetTransactions()//UserViewModel user)
         {
@@ -47,14 +48,14 @@ namespace ParrotWings.Controllers
                     DateCommited = tr.Date,
                     RecepientName = tr.Recepient.Name,
                     ResultingBalance = tr.ResultingBalance
-                } );
+                });
             }
 
             return Ok(transactionsVM);
         }
 
         //POST: /transaction/verifyuser
-        [Route("verifyuser")]
+        [Route("api/transaction/verifyuser")]
         [HttpPost]
         public bool VerifyRecepientUser(string userName)
         {
@@ -77,7 +78,7 @@ namespace ParrotWings.Controllers
         }
 
         //POST: /transaction/verifybalance
-        [Route("verifybalance")]
+        [Route("api/transaction/verifybalance")]
         [HttpPost]
         public bool VerifyDonorBalance(decimal transactionAmount)
         {

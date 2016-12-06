@@ -13,8 +13,8 @@ namespace TransactionSubsystem.Services.Implementation
         private readonly ITransactionRepository _transactionRepository;
         public TransactionService(IUserRepository userRepository, ITransactionRepository transactionRepository)
         {
-            if (userRepository == null) throw new ArgumentNullException(nameof(userRepository));
-            if (transactionRepository == null) throw new ArgumentNullException(nameof(transactionRepository));
+            if (userRepository == null) throw new ArgumentNullException(("userRepository"));
+            if (transactionRepository == null) throw new ArgumentNullException(("transactionRepository"));
 
             _userRepository = userRepository;
             _transactionRepository = transactionRepository;
@@ -28,7 +28,7 @@ namespace TransactionSubsystem.Services.Implementation
 
         public void CommitTransaction(Transaction transaction)
         {
-            if (transaction == null) throw new ArgumentNullException(nameof(transaction));
+            if (transaction == null) throw new ArgumentNullException(("transaction"));
 
             // 0. prepare
             transaction.TransactionOwner.CurrentBalance -= transaction.Amount;

@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../../core/domain/user';
+import { Credentials } from '../../core/domain/credentials';
 import { OperationResult } from '../../core/domain/operationResult';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { NotificationService } from '../../core/services/notification.service';
@@ -10,20 +10,20 @@ import { NotificationService } from '../../core/services/notification.service';
     templateUrl: './app/components/account/login.component.html'
 })
 export class LoginComponent implements OnInit {
-    private _user: User;
+    private _credentials: Credentials;
 
     constructor(public authService: AuthenticationService,
         //public notificationService: NotificationService,
         public router: Router) { }
 
     ngOnInit() {
-        this._user = new User('', '');
+        this._credentials = new Credentials('', '');
     }
 
     login(): void {
         var _authenticationResult: OperationResult = new OperationResult(false, '');
 
-        this.authService.login(this._user)
+        this.authService.login(this._credentials)
             .subscribe(res => {
                 _authenticationResult.Succeeded = res.Succeeded;
                 _authenticationResult.Message = res.Message;

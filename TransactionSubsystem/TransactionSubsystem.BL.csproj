@@ -61,6 +61,10 @@
     <Compile Include="Migrations\201612031313049_RepairedProblemWithCurrentTransaction.Designer.cs">
       <DependentUpon>201612031313049_RepairedProblemWithCurrentTransaction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612060801418_Salt.cs" />
+    <Compile Include="Migrations\201612060801418_Salt.Designer.cs">
+      <DependentUpon>201612060801418_Salt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Abstract\IEntityRepository.cs" />
@@ -90,6 +94,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612031313049_RepairedProblemWithCurrentTransaction.resx">
       <DependentUpon>201612031313049_RepairedProblemWithCurrentTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612060801418_Salt.resx">
+      <DependentUpon>201612060801418_Salt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

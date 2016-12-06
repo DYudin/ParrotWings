@@ -17,7 +17,7 @@ namespace TransactionSubsystem.Services.Mock
             var user = userRepository.GetSingle(x => x.Name == "Dmitriy Yudin");
             CurrentUser = user;
         }
-        public User CurrentUser { get; }
+        public User CurrentUser { get; set; }
 
         public Task<bool> Login(string email, string password)
         {

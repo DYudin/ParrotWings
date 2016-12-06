@@ -32,7 +32,7 @@ namespace ParrotWings.App_Start
             container.RegisterType<ISecurityService, SecurityService>();
 
             var userRepository = container.Resolve<IUserRepository>();
-            var transactionRepository = container.Resolve<IUserRepository>();
+            var transactionRepository = container.Resolve<ITransactionRepository>();
 
             // Services
             var securityService = container.Resolve<ISecurityService>();
