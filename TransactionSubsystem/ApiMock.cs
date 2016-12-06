@@ -12,25 +12,25 @@ namespace TransactionSubsystem
     public class ApiMock
     {
         private readonly IAuthenticationService _authMock;
-        private readonly UserVerificationService _userVerificationService;
+        private readonly IUserProvider _userProvider;
         private readonly IAmountVerificationService _amountVerificationService;
-        private readonly ITransactionCommitService _transactionCommitService;
+        private readonly ITransactionService _transactionService;
 
         public ApiMock(
             IAuthenticationService authMock,
-            UserVerificationService userVerificationService,
+            IUserProvider userProvider,
             IAmountVerificationService amountVerificationService,
-            ITransactionCommitService transactionCommitService)
+            ITransactionService transactionService)
         {
             if (authMock == null) throw new ArgumentNullException(nameof(authMock));
-            if (userVerificationService == null) throw new ArgumentNullException(nameof(userVerificationService));
+            if (userProvider == null) throw new ArgumentNullException(nameof(userProvider));
             if (amountVerificationService == null) throw new ArgumentNullException(nameof(amountVerificationService));
-            if (transactionCommitService == null) throw new ArgumentNullException(nameof(transactionCommitService));
+            if (transactionService == null) throw new ArgumentNullException(nameof(transactionService));
 
             _authMock = authMock;
-            _userVerificationService = userVerificationService;
+            _userProvider = userProvider;
             _amountVerificationService = amountVerificationService;
-            _transactionCommitService = transactionCommitService;
+            _transactionService = transactionService;
         }
 
         public void PrepareNewTransaction()
@@ -43,7 +43,7 @@ namespace TransactionSubsystem
         {
             bool result = false;
 
-            var targetUser = _userVerificationService.GetUserByName(userName);
+            var targetUser = _userProvider.GetUserByName(userName);
            
             if (targetUser != null)
             {
@@ -81,7 +81,7 @@ namespace TransactionSubsystem
         {
             if (_authMock.CurrentUser.PreparingTransaction.CommitAvailableState)
             {
-                _transactionCommitService.CommitTransaction(_authMock.CurrentUser.PreparingTransaction);
+                _transactionService.CommitTransaction(_authMock.CurrentUser.PreparingTransaction);
             }
             else
             {

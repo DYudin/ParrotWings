@@ -27,9 +27,4 @@
     <div class="form-group">
         <button class="btn btn-primary btn-lg btn-block" (click)="login()" [disabled]="!loginForm.form.valid">Sign In</button>
     </div>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" [(ngModel)]="_user.RememberMe" name="remember"> Remember me
-        </label>
-    </div>
 </form>

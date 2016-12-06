@@ -9,7 +9,7 @@ namespace ParrotWings.ViewModel
     {
         public int Id { get; set; }
         public string OwnerId { get; set; }
-        public string RecepientId { get; set; }
+        public string RecepientName { get; set; }
         public decimal Amount { get; set; }
         public decimal ResultingBalance { get; set; }
         public DateTime DateCommited { get; set; }

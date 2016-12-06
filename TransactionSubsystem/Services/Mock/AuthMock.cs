@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using Interfaces;
@@ -18,9 +19,9 @@ namespace TransactionSubsystem.Services.Mock
         }
         public User CurrentUser { get; }
 
-        public bool Login(string login, string password)
+        public Task<bool> Login(string email, string password)
         {
-            return false;
+            return Task.Run(() => false);
         }
     }
 }

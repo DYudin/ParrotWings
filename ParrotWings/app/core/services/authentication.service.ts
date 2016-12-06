@@ -8,7 +8,7 @@ import { User } from '../domain/user';
 export class AuthenticationService {
 
     private _accountRegisterAPI: string = 'api/account/register/';
-    private _accountLoginAPI: string = 'api/account/authenticate/';
+    private _accountLoginAPI: string = 'api/account/login/';
     private _accountLogoutAPI: string = 'api/account/logout/';
 
     constructor(public accountService: DataService) { }

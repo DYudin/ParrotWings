@@ -21,21 +21,19 @@ namespace TransactionSubsystem.Repositories
 
         private void Initialize()
         {
-            //InitializeUsers();
-            InitializeTransactions();
+            InitializeUsers();
         }
 
         private void InitializeUsers()
         {
-            Users.Add(new User("John Smith", "hh@mail.ru") { CurrentBalance = 500});
-            Users.Add(new User("Margaret Dobi", "DobiM@mail.ru") { CurrentBalance = 500 });
-            Users.Add(new User("Dmitriy Yudin", "exdv@mail.ru") { CurrentBalance = 500 });
-          
-            SaveChanges();
-        }
+            if (!Users.Any())
+            {
+                Users.Add(new User("John Smith", "hh@mail.ru") {CurrentBalance = 500});
+                Users.Add(new User("Margaret Dobi", "DobiM@mail.ru") {CurrentBalance = 500});
+                Users.Add(new User("Dmitriy Yudin", "exdv@mail.ru") {CurrentBalance = 500});
 
-        private void InitializeTransactions()
-        {
+                SaveChanges();
+            }
         }
     }
 }

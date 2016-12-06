@@ -38,14 +38,15 @@ namespace TransactionSubsystem
 
             // middle services
             IAmountVerificationService amountVerificationService = new AmountVerificationService(userRepository);
-            UserVerificationService userVerificationService = new UserVerificationService(userRepository);
+            ISecurityService securityService = new SecurityService();
+            IUserProvider userProvider = new UserProvider(userRepository, securityService);
             IAuthenticationService authMock = new AuthMock(userRepository);
-            ITransactionCommitService transactionCommitService = new TransactionCommitService(userRepository,
+            ITransactionService transactionService = new TransactionService(userRepository,
                 transactionRepository);
 
             // high services
-            _apiMock = new ApiMock(authMock, userVerificationService, amountVerificationService,
-                transactionCommitService);
+            _apiMock = new ApiMock(authMock, userProvider, amountVerificationService,
+                transactionService);
 
             _isInitialized = true;
         }

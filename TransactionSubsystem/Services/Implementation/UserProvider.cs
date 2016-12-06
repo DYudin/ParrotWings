@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Interfaces;
 using TransactionSubsystem.Entities;
 using TransactionSubsystem.Repositories.Abstract;
@@ -16,9 +17,20 @@ namespace TransactionSubsystem.Services.Implementation
             _securityService = securityService;
         }
 
-        public User CreateUser(string userName, string email, string password, int[] roles)
+        public User GetUserByName(string userName)
         {
-            //var existingUser = _userRepository.GetSingle(x=>x.Name == userName);
+            if (string.IsNullOrWhiteSpace(userName)) throw new ArgumentException(nameof(userName));
+
+            return _userRepository.GetSingle(x => x.Name == userName);
+        }
+
+        public Task<User> CreateUser(string userName, string email, string password)
+        {
+            return Task.Run(() => CreateUserInternal(userName, email, password));
+        }
+
+        private User CreateUserInternal(string userName, string email, string password)
+        {
             var existingUser = _userRepository.GetSingle(x => x.Email == email);
 
             if (existingUser != null)

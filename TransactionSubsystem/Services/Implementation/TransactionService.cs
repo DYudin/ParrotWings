@@ -1,21 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Interfaces;
 using TransactionSubsystem.Entities;
 using TransactionSubsystem.Repositories.Abstract;
 
 namespace TransactionSubsystem.Services.Implementation
 {
-    public class TransactionCommitService : ITransactionCommitService
+    public class TransactionService : ITransactionService
     {
         private readonly IUserRepository _userRepository;
         private readonly ITransactionRepository _transactionRepository;
-        public TransactionCommitService(IUserRepository userRepository, ITransactionRepository transactionRepository)
+        public TransactionService(IUserRepository userRepository, ITransactionRepository transactionRepository)
         {
             if (userRepository == null) throw new ArgumentNullException(nameof(userRepository));
             if (transactionRepository == null) throw new ArgumentNullException(nameof(transactionRepository));
 
             _userRepository = userRepository;
             _transactionRepository = transactionRepository;
+        }
+
+        public IEnumerable<Transaction> GetTransactionsByUserName(string userName)
+        {
+            var list = _transactionRepository.FindBy(x => x.TransactionOwner.Name == userName);
+            return list;
         }
 
         public void CommitTransaction(Transaction transaction)

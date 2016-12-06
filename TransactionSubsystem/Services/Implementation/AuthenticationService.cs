@@ -1,4 +1,5 @@
 ﻿
+using System.Threading.Tasks;
 using Interfaces;
 using TransactionSubsystem.Entities;
 using TransactionSubsystem.Repositories.Abstract;
@@ -23,18 +24,25 @@ namespace TransactionSubsystem.Services.Implementation
 
         }
 
-        public bool Login(string userName, string password)
+        public Task<bool> Login(string email, string password)
+        {
+            return Task.Run(() => LoginInternal(email, password));
+        }
+
+        private bool LoginInternal(string email, string password)
         {
             bool loginResult = false;
 
-            var user = _userRepository.GetSingle(x => x.Name == userName);
-            if (user != null && isPasswordValid(user, password))
+            _currentUser = _userRepository.GetSingle(x => x.Email == email);
+            if (_currentUser != null && isPasswordValid(_currentUser, password))
             {
+                _currentUser.PrepareNewTransaction();
                 loginResult = true;
             }
 
             return loginResult;
         }
+
         private bool isPasswordValid(User user, string password)
         {
             return string.Equals(_securityService.EncryptPassword(password, user.Salt), user.HashedPassword);
