@@ -13,7 +13,9 @@ namespace TransactionSubsystem.Services.Implementation
         private readonly ISecurityService _securityService;
 
         public AuthenticationService(IUserRepository userRepository, ISecurityService securityService)
-        {
+        {   
+            if (userRepository == null) throw new ArgumentNullException("userRepository");
+            if (securityService == null) throw new ArgumentNullException("securityService");
             _userRepository = userRepository;
             _securityService = securityService;
         }
