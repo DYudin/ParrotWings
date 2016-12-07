@@ -31,11 +31,13 @@ export class LoginComponent implements OnInit {
             error => console.error('Error: ' + error),
             () => {
                 if (_authenticationResult.Succeeded) {
+                    alert(_authenticationResult.Message);
                     //this.notificationService.printSuccessMessage('Welcome back ' + this._user.Username + '!');
-                    localStorage.setItem('user', JSON.stringify(this._user));
+                    localStorage.setItem('user', JSON.stringify(this._credentials));
                     this.router.navigate(['home']);
                 }
                 else {
+                    alert(_authenticationResult.Message);
                     //this.notificationService.printErrorMessage(_authenticationResult.Message);
                 }
             });

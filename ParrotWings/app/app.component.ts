@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
             return _user.Username;
         }
         else
-            return 'Account';
+            return 'No user';
     }
 
     logout(): void {

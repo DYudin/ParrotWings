@@ -3,12 +3,27 @@
     <a class="col-md-2" routerLink="/home"><i class="fa fa-home fa-fw"></i>&nbsp;Home</a>
 
     <div class="col-md-2">
-        <a routerLink="/transaction" routerLinkActive="active"><i class="fa fa-credit-card fa-fw"></i>&nbsp;Transactions</a>
+        <div><i class="fa fa-fw"></i>&nbsp;{{getUserName()}}</div>
     </div>
 
     <div class="col-md-2">
-        <a routerLink="/account/login" routerLinkActive="active"><i class="fa fa-unlock-alt fa-fw"></i>&nbsp;Sign in</a>
+        <a routerLink="/transaction" routerLinkActive="active" [hidden]="!isUserLoggedIn()"><i class="fa fa-credit-card fa-fw"></i>&nbsp;Transactions</a>
     </div>
+    <div class="col-md-2">
+        <li class="dropdown">
+            <ul class="dropdown-menu">
+                <li *ngIf="!isUserLoggedIn()">
+                    <a [routerLink]="/account/login"><i class="fa fa-unlock-alt fa-fw"></i>&nbsp;Sign in</a>
+                </li>
+                <li *ngIf="isUserLoggedIn()">
+                    <a [routerLink]="/home" (click)="logout()"><i class="fa fa-power-off fa-fw"></i>&nbsp;Logout</a>
+                </li>
+            </ul>
+        </li>
+</div>
+    <!--<div class="col-md-2">
+        <a routerLink="/account/login" routerLinkActive="active"><i class="fa fa-unlock-alt fa-fw"></i>&nbsp;Sign in</a>
+    </div>-->
 
     <div class="col-md-2">
         <a routerLink="/account/register" routerLinkActive="active"><i class="fa fa-check fa-fw"></i>&nbsp;Register</a>

@@ -31,9 +31,8 @@ namespace ParrotWings.Controllers
             _amountVerificationService = amountVerificationService;
             _transactionService = transactionService;
         }
-
-        //GET: /transaction/alltransactions
-        [Route("api/transactions")]
+        
+        [Route("api/transaction/alltransactions")]
         [HttpGet]
         public IHttpActionResult GetTransactions()//UserViewModel user)
         {
@@ -53,8 +52,7 @@ namespace ParrotWings.Controllers
 
             return Ok(transactionsVM);
         }
-
-        //POST: /transaction/verifyuser
+        
         [Route("api/transaction/verifyuser")]
         [HttpPost]
         public bool VerifyRecepientUser(string userName)
@@ -76,8 +74,7 @@ namespace ParrotWings.Controllers
 
             return result;
         }
-
-        //POST: /transaction/verifybalance
+        
         [Route("api/transaction/verifybalance")]
         [HttpPost]
         public bool VerifyDonorBalance(decimal transactionAmount)
@@ -96,8 +93,7 @@ namespace ParrotWings.Controllers
             return result;
         }
 
-        //POST: /transaction/send
-        [Route("send")]
+        [Route("api/transaction/send")]
         [HttpPost]
         public void CommitTransaction()
         {

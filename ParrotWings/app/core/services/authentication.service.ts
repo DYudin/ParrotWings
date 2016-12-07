@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
 import { Registration } from '../domain/registration';
 import { User } from '../domain/user';
+import { Credentials } from '../domain/credentials';
 
 @Injectable()
 export class AuthenticationService {
@@ -20,7 +21,7 @@ export class AuthenticationService {
         return this.accountService.post(JSON.stringify(newUser));
     }
 
-    login(creds: User) {
+    login(creds: Credentials) {
         this.accountService.set(this._accountLoginAPI);
         return this.accountService.post(JSON.stringify(creds));
     }

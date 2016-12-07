@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { DataService } from '../core/services/data.service';
 import { AuthenticationService } from '../core/services/authentication.service';
+import { OperationResult } from '../core/domain/operationResult';
 import { Router } from '@angular/router';
 import { User } from '../core/domain/user';
 import { Transaction } from '../core/domain/transaction';
@@ -16,7 +17,8 @@ export class TransactionComponent implements OnInit {
 
     private _transactions: Array<Transaction>;
     private verifyAmountResult: boolean;
-	private _transaction: Transaction;
+    private _transaction: Transaction;
+    private _isUserAuthenticated: boolean;
 
     constructor(public transactionService: DataService,
         public authService: AuthenticationService) {
@@ -24,13 +26,16 @@ export class TransactionComponent implements OnInit {
     }
 
     ngOnInit() {
+        let _isUserAuthenticated = this.authService.isUserAuthenticated();
+
         //this.transactionService.set('api/transaction/alltransactions');
         //this.getTransactions();
+
 		this._transaction = new Transaction();
     }
 
     getTransactions(): void {
-		 this.transactionService.set(_transactionsAPI);
+		 this.transactionService.set(this._transactionsAPI);
         let self = this;
         self.transactionService.get()
             .subscribe(res => {
@@ -46,7 +51,7 @@ export class TransactionComponent implements OnInit {
 	     this.transactionService.set(this._verifyAmountAPI);
         //let user = this.authService.getLoggedInUser();
         let self = this;
-        self.transactionService.post(_transaction.Amount)
+        self.transactionService.post(this._transaction.Amount)
             .subscribe(res => {
 
                 self.verifyAmountResult = true;
@@ -58,7 +63,7 @@ export class TransactionComponent implements OnInit {
     }
 
 	 send(): void {       
-	    var _sendResult: OperationResult = new OperationResult(false, '');
+         var _sendResult: OperationResult = new OperationResult(false, '');
         this.transactionService.post(this._transaction)
             .subscribe(res => {
                 _sendResult.Succeeded = res.Succeeded;
@@ -67,11 +72,13 @@ export class TransactionComponent implements OnInit {
             error => console.error('Error: ' + error),
             () => {
                 if (_sendResult.Succeeded) {
+                    alert(_sendResult.Message);
                     //this.notificationService.printSuccessMessage('Welcome back ' + this._user.Username + '!');
                     localStorage.setItem('transaction', JSON.stringify(this._transaction));
                     //this.router.navigate(['home']);
                 }
                 else {
+                    alert(_sendResult.Message);
                     //this.notificationService.printErrorMessage(_authenticationResult.Message);
                 }
             });

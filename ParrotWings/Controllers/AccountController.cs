@@ -27,11 +27,7 @@ public class AccountController : ApiController
     [HttpPost]
     public async Task<IHttpActionResult> Register([FromBody] RegistrationViewModel user)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        IHttpActionResult result = Ok();
+        Result registerResult = null;
 
         try
         {
@@ -39,39 +35,74 @@ public class AccountController : ApiController
 
             if (_user != null)
             {
-                result = Ok(_user);
+                registerResult = new Result()
+                {
+                    Succeeded = true,
+                    Message = "Register succeeded"
+                };
+            }
+            else
+            {
+                registerResult = new Result()
+                {
+                    Succeeded = true,
+                    Message = "Register failed"
+                };
             }
         }
         catch (Exception ex)
         {
-            result = new ExceptionResult(ex, this);
+            registerResult = new Result()
+            {
+                Succeeded = false,
+                Message = ex.Message
+            };
         }
 
-        return result;
+        return Ok(registerResult); ;
     }
-    
-    // POST: /account/login
-     [Route("api/account/login")]
+
+
+    [Route("api/account/login")]
     [HttpPost]
-    [AllowAnonymous]
-    public async Task<IHttpActionResult> Login(LoginViewModel model, string returnUrl)
+    public async Task<IHttpActionResult> Login(LoginViewModel model) //, string returnUrl
     {
-        if (!ModelState.IsValid)
+        Result loginResult = null;
+
+        try
         {
-            return BadRequest(ModelState);
+
+            var authResult = await _authenticationService.Login(model.Email, model.Password);
+
+            if (authResult)
+            {
+                loginResult = new Result()
+                {
+                    Succeeded = true,
+                    Message = "Authentication succeeded"
+                };
+
+                //return Ok(loginResult);
+            }
+            else
+            {
+                loginResult = new Result()
+                {
+                    Succeeded = false,
+                    Message = "Authentication failed"
+                };                
+            }
+        }
+        catch (Exception ex)
+        {
+            loginResult = new Result()
+            {
+                Succeeded = false,
+                Message = ex.Message
+            };
         }
 
-        var result = await _authenticationService.Login(model.Email, model.Password);
-
-        if (result)
-        {
-            return Ok();
-        }
-        else
-        {
-            ModelState.AddModelError("", "Invalid login attempt.");
-            return BadRequest(ModelState);
-        }
+        return Ok(loginResult);
     }
 
     [Route("api/account/logout")]
