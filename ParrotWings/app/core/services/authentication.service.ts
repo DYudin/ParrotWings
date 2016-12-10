@@ -44,7 +44,7 @@ export class AuthenticationService {
 
         if (this.isUserAuthenticated()) {
             var _userData = JSON.parse(localStorage.getItem('user'));
-            _user = new User(_userData.Username, _userData.Password);
+            _user = new User(_userData.Username);
         }
 
         return _user;

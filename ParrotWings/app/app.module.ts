@@ -12,6 +12,7 @@ import { TransactionComponent } from './components/transaction.component';
 
 import { routing } from './routes';
 
+import { EqualValidator } from './components/account/equal-validator.directive';
 import { DataService } from './core/services/data.service';
 import { AuthenticationService } from './core/services/authentication.service';
 //import { UtilityService } from './core/services/utility.service';
@@ -33,7 +34,7 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         HttpModule,
         routing,
         AccountModule ],
-    declarations: [AppComponent, HomeComponent, TransactionComponent],
+    declarations: [AppComponent, HomeComponent, TransactionComponent, EqualValidator ],
     providers: [DataService, AuthenticationService, //NotificationService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: RequestOptions, useClass: AppBaseRequestOptions }],

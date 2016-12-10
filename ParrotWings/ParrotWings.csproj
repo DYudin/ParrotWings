@@ -117,6 +117,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\WarmupController.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -162,6 +163,7 @@
     <TypeScriptCompile Include="app\components\account\login.component.ts" />
     <TypeScriptCompile Include="app\components\account\register.component.ts" />
     <TypeScriptCompile Include="app\components\account\routes.ts" />
+    <TypeScriptCompile Include="app\components\account\equal-validator.directive.ts" />
     <TypeScriptCompile Include="app\components\home.component.ts" />
     <TypeScriptCompile Include="app\components\transaction.component.ts" />
     <TypeScriptCompile Include="app\core\domain\operationResult.ts" />

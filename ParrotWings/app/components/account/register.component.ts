@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Registration } from '../../core/domain/registration';
 import { OperationResult } from '../../core/domain/operationResult';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { EqualValidator } from './equal-validator.directive';
 //import { NotificationService } from '../../core/services/notification.service';
 
 @Component({

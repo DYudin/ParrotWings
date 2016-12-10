@@ -34,7 +34,7 @@ namespace ParrotWings.Controllers
         
         [Route("api/transaction/alltransactions")]
         [HttpGet]
-        public IHttpActionResult GetTransactions()//UserViewModel user)
+        public IHttpActionResult GetTransactions()
         {
             var transactionsVM = new List<TransactionViewModel>();
             IEnumerable<Transaction> transactions = _transactionService.GetTransactionsByUserName(_authenticationService.CurrentUser.Name);

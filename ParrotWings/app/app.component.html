@@ -1,5 +1,10 @@
-﻿
-<div class="row">
+﻿<div class="row" [hidden]="servicesInitialized">
+    <div class="col-md-6">
+        Initializing services. Please wait...
+    </div>
+</div>
+
+<div class="row" [hidden]="!servicesInitialized">
     <a class="col-md-2" routerLink="/home"><i class="fa fa-home fa-fw"></i>&nbsp;Home</a>
 
     <div class="col-md-2">
@@ -9,21 +14,27 @@
     <div class="col-md-2">
         <a routerLink="/transaction" routerLinkActive="active" [hidden]="!isUserLoggedIn()"><i class="fa fa-credit-card fa-fw"></i>&nbsp;Transactions</a>
     </div>
-    <div class="col-md-2">
-        <li class="dropdown">
-            <ul class="dropdown-menu">
-                <li *ngIf="!isUserLoggedIn()">
-                    <a [routerLink]="/account/login"><i class="fa fa-unlock-alt fa-fw"></i>&nbsp;Sign in</a>
-                </li>
-                <li *ngIf="isUserLoggedIn()">
-                    <a [routerLink]="/home" (click)="logout()"><i class="fa fa-power-off fa-fw"></i>&nbsp;Logout</a>
-                </li>
-            </ul>
-        </li>
-</div>
     <!--<div class="col-md-2">
-        <a routerLink="/account/login" routerLinkActive="active"><i class="fa fa-unlock-alt fa-fw"></i>&nbsp;Sign in</a>
-    </div>-->
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <ul class="dropdown-menu">
+                    <li *ngIf="!isUserLoggedIn()">
+                        <a routerLink="/account/login"><i class="fa fa-unlock-alt fa-fw"></i>&nbsp;Sign in</a>
+                    </li>
+                    <li *ngIf="isUserLoggedIn()">
+                        <a routerLink="/home" (click)="logout()"><i class="fa fa-power-off fa-fw"></i>&nbsp;Logout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+</div>-->
+    <div class="col-md-2">
+        <a routerLink="/account/login" routerLinkActive="active" [hidden]="isUserLoggedIn()"><i class="fa fa-unlock-alt fa-fw"></i>&nbsp;Sign in</a>
+    </div>
+
+    <div class="col-md-2">
+        <a routerLink="/home" routerLinkActive="active" [hidden]="!isUserLoggedIn()"><i class="fa fa-unlock-alt fa-fw"></i>&nbsp;Logout</a>
+    </div>
 
     <div class="col-md-2">
         <a routerLink="/account/register" routerLinkActive="active"><i class="fa fa-check fa-fw"></i>&nbsp;Register</a>

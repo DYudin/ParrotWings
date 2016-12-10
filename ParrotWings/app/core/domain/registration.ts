@@ -2,6 +2,7 @@
     Username: string;
     Password: string;
     Email: string;
+    PasswordConfirmation: string;    
 
     constructor(username: string,
         password: string,

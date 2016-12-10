@@ -4,6 +4,7 @@ import { Credentials } from '../../core/domain/credentials';
 import { OperationResult } from '../../core/domain/operationResult';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { User } from '../../core/domain/user';
 
 @Component({
     selector: 'login',
@@ -11,13 +12,14 @@ import { NotificationService } from '../../core/services/notification.service';
 })
 export class LoginComponent implements OnInit {
     private _credentials: Credentials;
+    private _currentUser: User;
 
     constructor(public authService: AuthenticationService,
         //public notificationService: NotificationService,
         public router: Router) { }
 
     ngOnInit() {
-        this._credentials = new Credentials('', '');
+        this._credentials = new Credentials('', '');        
     }
 
     login(): void {
@@ -32,8 +34,9 @@ export class LoginComponent implements OnInit {
             () => {
                 if (_authenticationResult.Succeeded) {
                     alert(_authenticationResult.Message);
-                    //this.notificationService.printSuccessMessage('Welcome back ' + this._user.Username + '!');
-                    localStorage.setItem('user', JSON.stringify(this._credentials));
+                    //this.notificationService.printSuccessMessage('Welcome back ' + this._user.Username + '!');                
+                    let _currentUser = new User(this._credentials.Email);
+                    localStorage.setItem('user', JSON.stringify(this._currentUser));
                     this.router.navigate(['home']);
                 }
                 else {

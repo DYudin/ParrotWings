@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/map';
 import { enableProdMode } from '@angular/core';
+import { DataService } from './core/services/data.service';
 
 enableProdMode();
 import { AuthenticationService } from './core/services/authentication.service';
@@ -13,12 +14,30 @@ import { User } from './core/domain/user';
 })
 
 export class AppComponent implements OnInit {
+    private _startAPI: string = 'api/warmup/start';
+    private servicesInitialized: boolean = false;
+    private response: string;
 
     constructor(public authService: AuthenticationService,
-        public location: Location) { }
+        public location: Location, public warmUpService: DataService) { }
 
     ngOnInit() {
         this.location.go('/');
+
+        // warm up
+        this.warmUpService.set(this._startAPI);
+
+        this.warmUpService.get()
+            .subscribe(res => {
+                var data: any = res.json();
+                this.response = data;
+
+                if (data == "Done") {
+                    this.servicesInitialized = true;
+                }
+
+            },
+            error => console.error('Error: ' + error));
     }
 
     isUserLoggedIn(): boolean {
