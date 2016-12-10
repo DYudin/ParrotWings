@@ -7,7 +7,7 @@ namespace Interfaces
 {
     public interface IAuthenticationService
     {
-        User CurrentUser { get; }
+        User CurrentUser { get; set; }
 
         Task<bool> Login(string email, string password);
     }

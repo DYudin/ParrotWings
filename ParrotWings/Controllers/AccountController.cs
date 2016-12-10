@@ -71,7 +71,6 @@ public class AccountController : ApiController
 
         try
         {
-
             var authResult = await _authenticationService.Login(model.Email, model.Password);
 
             if (authResult)
@@ -111,7 +110,7 @@ public class AccountController : ApiController
     {
         try
         {
-            // TODO: await HttpContext.GetOwinContext().Authentication.SignOutAsync("Cookies");
+            _authenticationService.CurrentUser = null;
             return Ok();
         }
         catch (Exception ex)

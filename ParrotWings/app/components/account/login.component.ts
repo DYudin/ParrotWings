@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
                 if (_authenticationResult.Succeeded) {
                     alert(_authenticationResult.Message);
                     //this.notificationService.printSuccessMessage('Welcome back ' + this._user.Username + '!');                
-                    let _currentUser = new User(this._credentials.Email);
+                    this._currentUser = new User(this._credentials.Email);
                     localStorage.setItem('user', JSON.stringify(this._currentUser));
                     this.router.navigate(['home']);
                 }

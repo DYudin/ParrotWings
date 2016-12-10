@@ -23,7 +23,14 @@ namespace TransactionSubsystem.Services.Implementation
 
         public User CurrentUser
         {
-            get { return _currentUser; }
+            get
+            {
+                return _currentUser;
+            }
+            set
+            {
+                _currentUser = value;
+            }
 
         }
 
