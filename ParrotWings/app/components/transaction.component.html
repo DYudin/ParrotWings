@@ -20,7 +20,7 @@
         <!--Entering user-->
         <div class="row">
             <div class="form-group col-sm-4">
-                <input type="text" (ngModelChange)="onUserModified($event)" class="form-control input-sm" placeholder="Enter recepient name" [(ngModel)]="_transaction.RecepientName"
+                <input type="text" (ngModelChange)="onUserModified($event)" class="form-control input-sm" placeholder="Enter recepient name" [(ngModel)]="_transaction.CorrespondedUser"
                        name="recepient" id="recepient" #recepient="ngModel" required />
                 <div [hidden]="recepient.valid || recepient.untouched" class="alert alert-danger">
                     Recepient name is required

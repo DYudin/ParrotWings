@@ -23,7 +23,8 @@ namespace TransactionSubsystem.Services.Implementation
 
         public IEnumerable<Transaction> GetTransactionsByUserName(string userName)
         {
-            var list = _transactionRepository.FindBy(x => x.TransactionOwner.Name == userName || x.Recepient.Name == userName);
+            //var list = _transactionRepository.FindBy(x => x.TransactionOwner.Name == userName || x.Recepient.Name == userName);
+            var list = _transactionRepository.FindByIncluding(x => x.TransactionOwner.Name == userName || x.Recepient.Name == userName);
             return list;
         }
 

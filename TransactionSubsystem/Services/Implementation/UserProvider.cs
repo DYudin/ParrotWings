@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Interfaces;
 using TransactionSubsystem.Entities;
 using TransactionSubsystem.Repositories.Abstract;
+using System.Collections.Generic;
 
 namespace TransactionSubsystem.Services.Implementation
 {
@@ -22,6 +23,11 @@ namespace TransactionSubsystem.Services.Implementation
             if (string.IsNullOrWhiteSpace(userName)) throw new ArgumentException((userName));
 
             return _userRepository.GetSingle(x => x.Name == userName);
+        }
+
+        public Task<IEnumerable<User>> GetUsers()
+        {
+            return Task.Run(() => _userRepository.GetAll());
         }
 
         public Task<User> CreateUser(string userName, string email, string password)

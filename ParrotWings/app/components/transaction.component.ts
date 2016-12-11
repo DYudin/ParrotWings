@@ -17,8 +17,10 @@ export class TransactionComponent implements OnInit {
     private _verifyUserAPI: string = 'api/transaction/verifyuser';
     private _sendMoneyAPI: string = 'api/transaction/sendmoney';
     private _currentUserInfo: string = 'api/transaction/currentuserinfo';
+    private _usersAPI: string = 'api/transaction/allusers';
 
     private _transactions: Array<Transaction>;
+    private _users: Array<User>;
     private _verifyAmountResult: boolean;
     private _transaction: Transaction;
     private _currentUser: User;
@@ -33,6 +35,7 @@ export class TransactionComponent implements OnInit {
         let _isUserAuthenticated = this.authService.isUserAuthenticated();
         this._currentUser = new User('');
         this.getCurrentUserInfo();
+        this.getUsers();        
         this.getTransactions();
 
 		this._transaction = new Transaction();
@@ -70,6 +73,17 @@ export class TransactionComponent implements OnInit {
                 self._transactions = data;
                 },
                 error => console.error('Error: ' + error));
+    }
+
+    getUsers(): void {
+        this.transactionService.set(this._usersAPI);
+        let self = this;
+        self.transactionService.get()
+            .subscribe(res => {
+                var data: any = res.json();
+                self._users = data;
+            },
+            error => console.error('Error: ' + error));
     }
 
     verifyAmount(): void {

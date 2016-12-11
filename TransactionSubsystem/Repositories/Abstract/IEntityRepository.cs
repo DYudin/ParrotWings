@@ -6,7 +6,7 @@ namespace TransactionSubsystem.Repositories.Abstract
 {
     public interface IEntityRepository<T> where T : class, new()
     {
-       
+        IEnumerable<T> FindByIncluding(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
         IEnumerable<T> GetAll();
 
         //T GetSingle(int id);

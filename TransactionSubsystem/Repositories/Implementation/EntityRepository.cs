@@ -23,7 +23,19 @@ namespace TransactionSubsystem.Repositories.Implementation
         {
             return _context.Set<T>().AsEnumerable();
         }
-    
+
+        public virtual IEnumerable<T> FindByIncluding(
+            Expression<Func<T, bool>> predicate,
+            params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> query = _context.Set<T>().Where(predicate);
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            return query.AsEnumerable();
+        }
+
         //public T GetSingle(int id)
         //{
         //    return _context.Set<T>().FirstOrDefault(x => x.Id == id);

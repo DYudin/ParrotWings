@@ -80,7 +80,22 @@ namespace ParrotWings.Controllers
 
             return Ok(transactionsVM);
         }
-        
+
+        [Route("api/transaction/allusers")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetUsers()
+        {
+            var usersVM = new List<UserViewModel>();
+            IEnumerable<User> users = await _userProvider.GetUsers();
+                
+            foreach (var user in users)
+            {
+                usersVM.Add(new UserViewModel() { UserName = user.Name, Id = user.Id });
+            }
+
+            return Ok(usersVM);
+        }
+
         [Route("api/transaction/verifyuser")]
         [HttpPost]
         public bool VerifyRecepientUser(string userName)

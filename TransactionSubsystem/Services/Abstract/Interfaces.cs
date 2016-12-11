@@ -16,8 +16,8 @@ namespace Interfaces
     {
         Task<User> CreateUser(string username, string email, string password);
         User GetUser(int userId);
-
         User GetUserByName(string userName);
+        Task<IEnumerable<User>> GetUsers();
     }
 
 
