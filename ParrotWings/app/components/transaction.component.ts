@@ -14,11 +14,14 @@ import { Pipe, PipeTransform } from "@angular/core";
 export class TransactionComponent implements OnInit {
     private _transactionsAPI: string = 'api/transaction/alltransactions';
 	private _verifyAmountAPI: string = 'api/transaction/verifyamount';
-	private _verifyUserAPI: string = 'api/transaction/verifyuser';
+    private _verifyUserAPI: string = 'api/transaction/verifyuser';
+    private _sendMoneyAPI: string = 'api/transaction/sendmoney';
+    private _currentUserInfo: string = 'api/transaction/currentuserinfo';
 
     private _transactions: Array<Transaction>;
-    private verifyAmountResult: boolean;
+    private _verifyAmountResult: boolean;
     private _transaction: Transaction;
+    private _currentUser: User;
     private _isUserAuthenticated: boolean;
 
     constructor(public transactionService: DataService,
@@ -28,24 +31,46 @@ export class TransactionComponent implements OnInit {
 
     ngOnInit() {
         let _isUserAuthenticated = this.authService.isUserAuthenticated();
-                
+        this._currentUser = new User('');
+        this.getCurrentUserInfo();
         this.getTransactions();
 
 		this._transaction = new Transaction();
     }
 
+    onUserModified(event: any) { // without type info
+        
+    }
+
+    onAmountModified(value) { // without type info
+        //this.verifyAmount();
+        //TODO:
+
+        if (value > this._currentUser.CurrentBalance) {
+            this._transaction.AmountValid = false;
+        }
+        else {
+            this._transaction.AmountValid = true;
+        }
+    }
+
+    getCurrentUserInfo(): void {
+        this.transactionService.set(this._currentUserInfo);      
+        this.transactionService.get()
+            .subscribe(res => {
+                var data: any = res.json();
+                this._currentUser = data;
+            },
+            error => console.error('Error: ' + error));
+    }
+    
     getTransactions(): void {
         this.transactionService.set(this._transactionsAPI);
         let self = this;
         self.transactionService.get()
             .subscribe(res => {
                 var data: any = res.json();
-                //var datePipe = new DatePipe();
-                //for (let entry of data) {
-                //    entry.Date = datePipe.transform(entry.Date, 'dd/MM/yyyy');
-                //}
-                
-                    self._transactions = data;
+                self._transactions = data;
                 },
                 error => console.error('Error: ' + error));
     }
@@ -57,16 +82,19 @@ export class TransactionComponent implements OnInit {
         self.transactionService.post(this._transaction.Amount)
             .subscribe(res => {
 
-                self.verifyAmountResult = true;
+                self._verifyAmountResult = true;
             },
             error => {
                 console.error('Error: ' + error);
-                self.verifyAmountResult = false;
+                self._verifyAmountResult = false;
             });
     }
 
-	 send(): void {       
-         var _sendResult: OperationResult = new OperationResult(false, '');
+    send(): void {       
+        this.transactionService.set(this._sendMoneyAPI);        
+        var _sendResult: OperationResult = new OperationResult(false, '');
+        this._transaction.Date = new Date(); // toDO now
+
         this.transactionService.post(this._transaction)
             .subscribe(res => {
                 _sendResult.Succeeded = res.Succeeded;

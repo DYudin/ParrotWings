@@ -1,8 +1,9 @@
 ﻿export class User {
-    Username: string;
+    UserName: string;
+    CurrentBalance: number;
 
     constructor(username: string)
     {
-        this.Username = username;        
+        this.UserName = username;        
     }
 }

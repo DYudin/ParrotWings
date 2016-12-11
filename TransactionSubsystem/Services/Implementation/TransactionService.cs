@@ -4,6 +4,7 @@ using System.Linq;
 using Interfaces;
 using TransactionSubsystem.Entities;
 using TransactionSubsystem.Repositories.Abstract;
+using System.Threading.Tasks;
 
 namespace TransactionSubsystem.Services.Implementation
 {
@@ -26,7 +27,12 @@ namespace TransactionSubsystem.Services.Implementation
             return list;
         }
 
-        public void CommitTransaction(Transaction transaction)
+        public Task CommitTransaction(Transaction transaction)
+        {
+            return Task.Run(() => CommitTransactionInternal(transaction));
+        }
+
+        public void CommitTransactionInternal(Transaction transaction)
         {
             if (transaction == null) throw new ArgumentNullException(("transaction"));
 

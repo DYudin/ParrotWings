@@ -30,7 +30,7 @@ namespace Interfaces
     public interface ITransactionService
     {
         IEnumerable<Transaction> GetTransactionsByUserName(string userName);
-        void CommitTransaction(Transaction transaction);
+        Task CommitTransaction(Transaction transaction);
     }
 
     public interface ISecurityService

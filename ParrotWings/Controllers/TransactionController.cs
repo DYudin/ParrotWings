@@ -4,6 +4,7 @@ using System.Web.Http;
 using Interfaces;
 using ParrotWings.ViewModel;
 using TransactionSubsystem.Entities;
+using System.Threading.Tasks;
 
 namespace ParrotWings.Controllers
 {
@@ -31,7 +32,20 @@ namespace ParrotWings.Controllers
             _amountVerificationService = amountVerificationService;
             _transactionService = transactionService;
         }
-        
+
+        [Route("api/transaction/currentuserinfo")]
+        [HttpGet]
+        public IHttpActionResult GetCurrentUserInfo()
+        {
+            //TODO:
+            UserViewModel userVM = new UserViewModel() {
+                UserName = _authenticationService.CurrentUser.Name,
+                CurrentBalance = _authenticationService.CurrentUser.CurrentBalance };
+                   
+            return Ok(userVM);
+        }
+
+
         [Route("api/transaction/alltransactions")]
         [HttpGet]
         public IHttpActionResult GetTransactions()
@@ -80,9 +94,9 @@ namespace ParrotWings.Controllers
             return result;
         }
         
-        [Route("api/transaction/verifybalance")]
+        [Route("api/transaction/verifyamount")]
         [HttpPost]
-        public bool VerifyDonorBalance(decimal transactionAmount)
+        public bool VerifyTransactionAmount(decimal transactionAmount)
         {
             bool result = false;
 
@@ -98,20 +112,38 @@ namespace ParrotWings.Controllers
             return result;
         }
 
-        [Route("api/transaction/send")]
+        [Route("api/transaction/sendmoney")]
         [HttpPost]
-        public void CommitTransaction()
+        public async Task<IHttpActionResult> CommitTransaction(TransactionViewModel transactionVM)
         {
-            if (_authenticationService.CurrentUser.PreparingTransaction.CommitAvailableState)
+            Result commitTransactionResult = null;
+            
+            try
             {
-                _transactionService.CommitTransaction(_authenticationService.CurrentUser.PreparingTransaction);
+                var transactionOwner = _userProvider.GetUserByName(_authenticationService.CurrentUser.Name);
+                var recepient = _userProvider.GetUserByName(transactionVM.RecepientName);
+
+                var transactionToSend = new Transaction()
+                {
+                    Recepient = recepient,
+                    TransactionOwner = transactionOwner,
+                    Amount = transactionVM.Amount,
+                    Date = transactionVM.Date
+                };
+
+                await _transactionService.CommitTransaction(transactionToSend);
+
             }
-            else
+            catch (Exception ex)
             {
-                // ERROR!!!
+                commitTransactionResult = new Result()
+                {
+                    Succeeded = false,
+                    Message = ex.Message
+                };
             }
 
-            _authenticationService.CurrentUser.PrepareNewTransaction();
+            return Ok(commitTransactionResult);
         }
     }
 }

@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
     getUserName(): string {
         if (this.isUserLoggedIn()) {
             var _user = this.authService.getLoggedInUser();
-            return _user.Username;
+            return _user.UserName;
         }
         else
             return 'No user';

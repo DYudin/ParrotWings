@@ -8,7 +8,7 @@ namespace ParrotWings.ViewModel
     public class TransactionViewModel
     {
         public int Id { get; set; }
-        public string OwnerId { get; set; }
+        public string OwnerName { get; set; }
         public string RecepientName { get; set; }
         public decimal Amount { get; set; }
         public decimal ResultingBalance { get; set; }
