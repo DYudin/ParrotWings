@@ -10,3 +10,6 @@ C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\Transactio
 C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\obj\Debug\TransactionSubsystem.Console.pdb
 C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\Дмитрий\Дима\Repositories\SharpDevelopersTestTask\TransactionSubsystem.Console\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Public\T\TransactionSubsystem.Console\bin\Debug\TransactionSubsystem.Console.exe.config
+C:\Users\Public\T\TransactionSubsystem.Console\obj\Debug\TransactionSubsystem.Console.exe
+C:\Users\Public\T\TransactionSubsystem.Console\obj\Debug\TransactionSubsystem.Console.pdb

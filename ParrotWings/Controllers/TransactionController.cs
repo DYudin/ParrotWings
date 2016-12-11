@@ -123,16 +123,32 @@ namespace ParrotWings.Controllers
                 var transactionOwner = _userProvider.GetUserByName(_authenticationService.CurrentUser.Name);
                 var recepient = _userProvider.GetUserByName(transactionVM.RecepientName);
 
-                var transactionToSend = new Transaction()
+                if (recepient == null)
                 {
-                    Recepient = recepient,
-                    TransactionOwner = transactionOwner,
-                    Amount = transactionVM.Amount,
-                    Date = transactionVM.Date
-                };
+                    commitTransactionResult = new Result()
+                    {
+                        Succeeded = false,
+                        Message = "User with name: {{transactionVM.RecepientName}} not found"
+                    };
+                }
+                else
+                {
+                    var transactionToSend = new Transaction()
+                    {
+                        Recepient = recepient,
+                        TransactionOwner = transactionOwner,
+                        Amount = transactionVM.Amount,
+                        Date = transactionVM.Date
+                    };
 
-                await _transactionService.CommitTransaction(transactionToSend);
+                    await _transactionService.CommitTransaction(transactionToSend);
 
+                    commitTransactionResult = new Result()
+                    {
+                        Succeeded = true,
+                        Message = "Transaction succeeded"
+                    };
+                }  
             }
             catch (Exception ex)
             {

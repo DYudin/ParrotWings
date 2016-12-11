@@ -42,10 +42,7 @@ export class TransactionComponent implements OnInit {
         
     }
 
-    onAmountModified(value) { // without type info
-        //this.verifyAmount();
-        //TODO:
-
+    onAmountModified(value) { // without type info   
         if (value > this._currentUser.CurrentBalance) {
             this._transaction.AmountValid = false;
         }
@@ -95,6 +92,7 @@ export class TransactionComponent implements OnInit {
         var _sendResult: OperationResult = new OperationResult(false, '');
         this._transaction.Date = new Date(); // toDO now
 
+        // send transaction
         this.transactionService.post(this._transaction)
             .subscribe(res => {
                 _sendResult.Succeeded = res.Succeeded;
@@ -104,14 +102,15 @@ export class TransactionComponent implements OnInit {
             () => {
                 if (_sendResult.Succeeded) {
                     alert(_sendResult.Message);
-                    //this.notificationService.printSuccessMessage('Welcome back ' + this._user.Username + '!');
-                    localStorage.setItem('transaction', JSON.stringify(this._transaction));
-                    //this.router.navigate(['home']);
+
+                    //refresh ui
+                    this.getCurrentUserInfo();
+                    this.getTransactions();
                 }
                 else {
                     alert(_sendResult.Message);
                     //this.notificationService.printErrorMessage(_authenticationResult.Message);
                 }
-            });
+            });      
     };
 }

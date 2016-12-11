@@ -15,5 +15,10 @@ namespace ParrotWings
             UnityConfig.RegisterComponents();
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
+
+        protected void Application_End()
+        {
+            //UnityConfig.DisposeComponents();            
+        }
     }
 }
