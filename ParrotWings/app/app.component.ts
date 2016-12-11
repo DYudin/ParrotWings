@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/map';
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, HostListener } from '@angular/core';
 import { DataService } from './core/services/data.service';
 
 enableProdMode();
@@ -17,6 +17,12 @@ export class AppComponent implements OnInit {
     private _startAPI: string = 'api/warmup/start';
     private servicesInitialized: boolean = false;
     private response: string;
+
+    @HostListener('window:unload', ['$event'])
+    unloadHandler(event) {
+        this.logout();
+        localStorage.removeItem('user')
+    }
 
     constructor(public authService: AuthenticationService,
         public location: Location, public warmUpService: DataService) { }

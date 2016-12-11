@@ -43,6 +43,7 @@ namespace TransactionSubsystem.Services.Implementation
             var user = new User()
             {
                 Name = userName,
+                CurrentBalance = 500,
                 Salt = passwordSalt,
                 Email = email,
                 HashedPassword = _securityService.EncryptPassword(password, passwordSalt)

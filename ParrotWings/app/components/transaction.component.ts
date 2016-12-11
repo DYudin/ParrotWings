@@ -5,6 +5,7 @@ import { OperationResult } from '../core/domain/operationResult';
 import { Router } from '@angular/router';
 import { User } from '../core/domain/user';
 import { Transaction } from '../core/domain/transaction';
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Component({
     selector: 'transaction',
@@ -27,22 +28,24 @@ export class TransactionComponent implements OnInit {
 
     ngOnInit() {
         let _isUserAuthenticated = this.authService.isUserAuthenticated();
-
-        //this.transactionService.set('api/transaction/alltransactions');
-        //this.getTransactions();
+                
+        this.getTransactions();
 
 		this._transaction = new Transaction();
     }
 
     getTransactions(): void {
-		 this.transactionService.set(this._transactionsAPI);
+        this.transactionService.set(this._transactionsAPI);
         let self = this;
         self.transactionService.get()
             .subscribe(res => {
-
-                    var data: any = res.json();
-
-                    self._transactions = data.Items;
+                var data: any = res.json();
+                //var datePipe = new DatePipe();
+                //for (let entry of data) {
+                //    entry.Date = datePipe.transform(entry.Date, 'dd/MM/yyyy');
+                //}
+                
+                    self._transactions = data;
                 },
                 error => console.error('Error: ' + error));
     }

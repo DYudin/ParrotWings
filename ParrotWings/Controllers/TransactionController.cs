@@ -41,10 +41,15 @@ namespace ParrotWings.Controllers
 
             foreach (var tr in transactions)
             {
+                if (tr.Recepient == null)
+                {
+                    tr.Recepient = new User (){ Name = "UnknownUser" };
+                }
+
                 transactionsVM.Add(new TransactionViewModel()
                 {
                     Amount = tr.Amount,
-                    DateCommited = tr.Date,
+                    Date = tr.Date,
                     RecepientName = tr.Recepient.Name,
                     ResultingBalance = tr.ResultingBalance
                 });
