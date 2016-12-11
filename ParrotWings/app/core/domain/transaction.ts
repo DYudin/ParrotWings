@@ -1,6 +1,6 @@
 ﻿export class Transaction {
     Amount: number;
-    RecepientName: string;
+    CorrespondedUser: string;
     Date: Date;
     ResultingBalance: number;
     AmountValid: boolean;

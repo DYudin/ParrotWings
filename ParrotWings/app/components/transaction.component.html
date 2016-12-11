@@ -59,14 +59,14 @@
         <table class="table">
             <tr>
                 <th>Date</th>
-                <th>Recepient name</th>
+                <th>User</th>
                 <th>Amount</th>
                 <th>Resulting balance</th>
             </tr>
 
             <tr *ngFor="let u of _transactions">
                 <td><span>{{u.Date | date:'medium'}}</span></td>
-                <td><span>{{u.RecepientName}}</span></td>
+                <td><span>{{u.CorrespondedUser}}</span></td>
                 <td><span>{{u.Amount}}</span></td>
                 <td><span>{{u.ResultingBalance}}</span></td>
             </tr>

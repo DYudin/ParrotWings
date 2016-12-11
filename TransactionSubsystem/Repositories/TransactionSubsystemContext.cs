@@ -31,9 +31,9 @@ namespace TransactionSubsystem.Repositories
                 Users.Add(user2);
                 Users.Add(user3);              
 
-                Transactions.Add(new Transaction() { Recepient = user1, TransactionOwner = user3, Amount = 200, ResultingBalance = 300, Date = DateTime.Now });
-                Transactions.Add(new Transaction() { Recepient = user2, TransactionOwner = user3, Amount = 100, ResultingBalance = 200, Date = DateTime.Now });
-                Transactions.Add(new Transaction() { Recepient = user3, TransactionOwner = user2, Amount = 50, ResultingBalance = 250, Date = DateTime.Now });                 
+                Transactions.Add(new Transaction() { Recepient = user1, TransactionOwner = user3, Amount = 200, OwnerResultingBalance = 300, Date = DateTime.Now });
+                Transactions.Add(new Transaction() { Recepient = user2, TransactionOwner = user3, Amount = 100, OwnerResultingBalance = 200, Date = DateTime.Now });
+                Transactions.Add(new Transaction() { Recepient = user3, TransactionOwner = user2, Amount = 50, OwnerResultingBalance = 250, Date = DateTime.Now });                 
 
                 SaveChanges();
             }

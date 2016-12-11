@@ -18,6 +18,7 @@ namespace TransactionSubsystem.Entities
         public User TransactionOwner { get; set; }
         public User Recepient { get; set; }
         public DateTime Date { get; set; }
-        public decimal ResultingBalance { get; set; }
+        public decimal OwnerResultingBalance { get; set; }
+        public decimal RecepientResultingBalance { get; set; }
     }
 }

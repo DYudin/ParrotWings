@@ -57,15 +57,24 @@ namespace ParrotWings.Controllers
             {
                 if (tr.Recepient == null)
                 {
-                    tr.Recepient = new User (){ Name = "UnknownUser" };
+                    tr.Recepient = new User (){ Name = "UnknownRecepient" };
+                }
+
+                if (tr.TransactionOwner == null)
+                {
+                    tr.TransactionOwner = new User() { Name = "UnknownOwner" };
                 }
 
                 transactionsVM.Add(new TransactionViewModel()
                 {
                     Amount = tr.Amount,
                     Date = tr.Date,
-                    RecepientName = tr.Recepient.Name,
-                    ResultingBalance = tr.ResultingBalance
+                    CorrespondedUser = tr.Recepient.Name == _authenticationService.CurrentUser.Name
+                    ? tr.TransactionOwner.Name
+                    : tr.Recepient.Name,
+                    ResultingBalance = tr.Recepient.Name == _authenticationService.CurrentUser.Name 
+                    ? tr.RecepientResultingBalance 
+                    : tr.OwnerResultingBalance
                 });
             }
 
@@ -121,7 +130,7 @@ namespace ParrotWings.Controllers
             try
             {
                 var transactionOwner = _userProvider.GetUserByName(_authenticationService.CurrentUser.Name);
-                var recepient = _userProvider.GetUserByName(transactionVM.RecepientName);
+                var recepient = _userProvider.GetUserByName(transactionVM.CorrespondedUser);
 
                 if (recepient == null)
                 {

@@ -40,8 +40,8 @@ namespace TransactionSubsystem.Services.Implementation
             transaction.TransactionOwner.CurrentBalance -= transaction.Amount;
             transaction.Recepient.CurrentBalance += transaction.Amount;
 
-            transaction.ResultingBalance = transaction.TransactionOwner.CurrentBalance;
-            transaction.Date = DateTime.Now;
+            transaction.OwnerResultingBalance = transaction.TransactionOwner.CurrentBalance;
+            transaction.RecepientResultingBalance = transaction.Recepient.CurrentBalance;            
 
             // 1. withdraw from donor
             _userRepository.Edit(transaction.TransactionOwner);
