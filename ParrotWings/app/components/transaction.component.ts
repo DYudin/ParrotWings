@@ -61,9 +61,7 @@ export class TransactionComponent implements OnInit {
             else {
                 this._transaction.AmountValid = true;
             }
-        }
-
-       
+        }       
     }
 
     getCurrentUserInfo(): void {
