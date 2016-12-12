@@ -76,8 +76,13 @@ export class TransactionComponent implements OnInit {
         let self = this;
         self.transactionService.get()
             .subscribe(res => {
-                var data: any = res.json();
+                var data: any = res.json();               
                 self._transactions = data;
+                self._transactions.sort(function (a, b) {
+                    var dateA = new Date(a.Date).getTime();
+                    var dateB = new Date(b.Date).getTime();
+                    return dateA < dateB ? 1 : -1;  
+                });
                 },
                 error => console.error('Error: ' + error));
     }

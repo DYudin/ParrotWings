@@ -76,7 +76,9 @@ namespace ParrotWings.Controllers
                     : tr.Recepient.Name,
                     ResultingBalance = tr.Recepient.Name == _authenticationService.CurrentUser.Name 
                     ? tr.RecepientResultingBalance 
-                    : tr.OwnerResultingBalance
+                    : tr.OwnerResultingBalance,
+                    Outgoing = tr.Recepient.Name != _authenticationService.CurrentUser.Name
+
                 });
             }
 

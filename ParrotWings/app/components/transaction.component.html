@@ -67,7 +67,7 @@
                 <th>Resulting balance</th>
             </tr>
 
-            <tr *ngFor="let u of _transactions | orderBy: 'Date':'false'">
+            <tr *ngFor="let u of _transactions | orderBy: 'Date':'false'; let i = index" [class.outgoing]="_transactions[i].Outgoing == true" [class.incoming]="_transactions[i].Outgoing == false">
                 <td><span>{{u.Date | date:'medium'}}</span></td>
                 <td><span>{{u.CorrespondedUser}}</span></td>
                 <td><span>{{u.Amount}}</span></td>

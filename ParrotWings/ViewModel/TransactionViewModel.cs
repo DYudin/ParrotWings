@@ -13,5 +13,6 @@ namespace ParrotWings.ViewModel
         public decimal Amount { get; set; }
         public decimal ResultingBalance { get; set; }
         public DateTime Date { get; set; }
+        public bool Outgoing { get; set; }
     }
 }

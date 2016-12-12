@@ -3,6 +3,7 @@
     CorrespondedUser: string;
     Date: Date;
     ResultingBalance: number;
+    Outgoing: boolean;
     AmountValid: boolean;
     CorrespondedUserValid: boolean;
 
