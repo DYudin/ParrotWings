@@ -6,11 +6,7 @@
 
 <div class="row" [hidden]="!servicesInitialized">
     <a class="col-md-2" routerLink="/home"><i class="fa fa-home fa-fw"></i>&nbsp;Home</a>
-
-    <!--<div class="col-md-2">
-        <div><i class="fa fa-fw"></i>&nbsp;{{getUserName()}}</div>
-    </div>-->
-
+    
     <div class="col-md-2">
         <a routerLink="/transaction" routerLinkActive="active" [hidden]="!isUserLoggedIn()"><i class="fa fa-credit-card fa-fw"></i>&nbsp;Transactions</a>
     </div>

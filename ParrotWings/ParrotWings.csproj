@@ -172,7 +172,6 @@
     <TypeScriptCompile Include="app\core\services\authentication.service.ts" />
     <TypeScriptCompile Include="app\core\services\data.service.ts" />
     <TypeScriptCompile Include="app\core\services\notification.service.ts" />
-    <TypeScriptCompile Include="app\core\services\orderbypipe.ts" />
     <TypeScriptCompile Include="app\main.ts" />
     <TypeScriptCompile Include="app\routes.ts" />
   </ItemGroup>

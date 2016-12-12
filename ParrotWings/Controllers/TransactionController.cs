@@ -12,39 +12,33 @@ namespace ParrotWings.Controllers
     public class TransactionController : ApiController
     {
         private readonly IAuthenticationService _authenticationService;
-        private readonly IUserProvider _userProvider;
-        private readonly IAmountVerificationService _amountVerificationService;
+        private readonly IUserProvider _userProvider;     
         private readonly ITransactionService _transactionService;
 
         public TransactionController(
             IAuthenticationService authenticationService,
-            IUserProvider userProvider,
-            IAmountVerificationService amountVerificationService,
+            IUserProvider userProvider,            
             ITransactionService transactionService)
         {
             if (authenticationService == null) throw new ArgumentNullException(("authenticationService"));
-            if (userProvider == null) throw new ArgumentNullException(("userProvider"));
-            if (amountVerificationService == null) throw new ArgumentNullException(("amountVerificationService"));
+            if (userProvider == null) throw new ArgumentNullException(("userProvider"));           
             if (transactionService == null) throw new ArgumentNullException(("transactionService"));
 
             _authenticationService = authenticationService;
-            _userProvider = userProvider;
-            _amountVerificationService = amountVerificationService;
+            _userProvider = userProvider;          
             _transactionService = transactionService;
         }
 
         [Route("api/transaction/currentuserinfo")]
         [HttpGet]
         public IHttpActionResult GetCurrentUserInfo()
-        {
-            //TODO:
+        {            
             UserViewModel userVM = new UserViewModel() {
                 UserName = _authenticationService.CurrentUser.Name,
                 CurrentBalance = _authenticationService.CurrentUser.CurrentBalance };
                    
             return Ok(userVM);
         }
-
 
         [Route("api/transaction/alltransactions")]
         [HttpGet]
@@ -55,7 +49,6 @@ namespace ParrotWings.Controllers
 
             foreach (var tr in transactions)
             {
-
                 //TODO: CLear
                 if (tr.Recepient == null)
                 {
@@ -98,47 +91,7 @@ namespace ParrotWings.Controllers
             }
 
             return Ok(usersVM);
-        }
-
-        [Route("api/transaction/verifyuser")]
-        [HttpPost]
-        public bool VerifyRecepientUser(string userName)
-        {
-            bool result = false;
-
-            var targetUser = _userProvider.GetUserByName(userName);
-
-            if (targetUser != null)
-            {
-                _authenticationService.CurrentUser.PreparingTransaction.CommitAvailableState = true;
-                _authenticationService.CurrentUser.PreparingTransaction.Recepient = targetUser;
-                result = true;
-            }
-            else
-            {
-                _authenticationService.CurrentUser.PreparingTransaction.CommitAvailableState = false;
-            }
-
-            return result;
-        }
-        
-        [Route("api/transaction/verifyamount")]
-        [HttpPost]
-        public bool VerifyTransactionAmount(decimal transactionAmount)
-        {
-            bool result = false;
-
-            var isAmountValid = _amountVerificationService.VerifyAmount(_authenticationService.CurrentUser, transactionAmount);
-            _authenticationService.CurrentUser.PreparingTransaction.CommitAvailableState = isAmountValid;
-
-            if (isAmountValid)
-            {
-                _authenticationService.CurrentUser.PreparingTransaction.Amount = transactionAmount;
-                result = true;
-            }
-
-            return result;
-        }
+        } 
 
         [Route("api/transaction/sendmoney")]
         [HttpPost]

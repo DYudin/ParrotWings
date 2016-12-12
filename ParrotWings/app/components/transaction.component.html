@@ -35,13 +35,13 @@
         <!--Entering amount-->  
         <div class="row">
             <div class="form-group col-sm-4">
-                <input type="number" (ngModelChange)="onAmountModified($event)" class="form-control input-sm" placeholder="Enter amount" [(ngModel)]="_transaction.Amount"
+                <input type="number" min="0" (ngModelChange)="onAmountModified($event)" class="form-control input-sm" placeholder="Enter amount" [(ngModel)]="_transaction.Amount"
                        name="amount" id="amount" #amount="ngModel" required />
                 <div [hidden]="amount.valid || amount.untouched" class="alert alert-danger">
                     Amount is required
                 </div>
                 <div [hidden]="amount.pristine || _transaction.AmountValid" class="alert alert-danger">
-                    You don't have enough money
+                    Invalid amount value
                 </div>
             </div>
             <div class="col-sm-8"></div>
@@ -67,16 +67,13 @@
                 <th>Resulting balance</th>
             </tr>
 
-            <tr *ngFor="let u of _transactions | orderBy: 'Date':'false'; let i = index" [class.outgoing]="_transactions[i].Outgoing == true" [class.incoming]="_transactions[i].Outgoing == false">
+            <tr *ngFor="let u of _transactions; let i = index" [class.outgoing]="_transactions[i].Outgoing == true" [class.incoming]="_transactions[i].Outgoing == false">
                 <td><span>{{u.Date | date:'medium'}}</span></td>
                 <td><span>{{u.CorrespondedUser}}</span></td>
                 <td><span>{{u.Amount}}</span></td>
                 <td><span>{{u.ResultingBalance}}</span></td>
             </tr>
-        </table>       
-        <!--<div>
-            <button (click)="getTransactions()" id="btnUserDetails">Load transactions</button>
-        </div>-->
+        </table> 
     </div>
 </div>
     

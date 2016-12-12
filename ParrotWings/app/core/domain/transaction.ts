@@ -7,18 +7,10 @@
     AmountValid: boolean;
     CorrespondedUserValid: boolean;
 
-    constructor(        
-		//amount: number,
-		//recepientName: string,
-		//date: Date,
-		//resultingBalance: number
-		) 
+    constructor(
+    ) 
     {
         this.AmountValid = true;
-        this.CorrespondedUserValid = true;
-        //this.Amount = amount;
-        //this.RecepientName = recepientName;
-		//this.Date = date;
-        //this.ResultingBalance = resultingBalance;
+        this.CorrespondedUserValid = true;      
     }
 }

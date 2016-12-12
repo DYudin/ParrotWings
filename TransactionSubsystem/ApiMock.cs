@@ -1,35 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Interfaces;
-using TransactionSubsystem.Entities;
-using TransactionSubsystem.Services.Implementation;
 
 namespace TransactionSubsystem
 {
     public class ApiMock
     {
         private readonly IAuthenticationService _authMock;
-        private readonly IUserProvider _userProvider;
-        private readonly IAmountVerificationService _amountVerificationService;
+        private readonly IUserProvider _userProvider;    
         private readonly ITransactionService _transactionService;
 
         public ApiMock(
             IAuthenticationService authMock,
-            IUserProvider userProvider,
-            IAmountVerificationService amountVerificationService,
+            IUserProvider userProvider,          
             ITransactionService transactionService)
         {
             if (authMock == null) throw new ArgumentNullException(("authMock"));
-            if (userProvider == null) throw new ArgumentNullException(("userProvider"));
-            if (amountVerificationService == null) throw new ArgumentNullException(("amountVerificationService"));
+            if (userProvider == null) throw new ArgumentNullException(("userProvider"));          
             if (transactionService == null) throw new ArgumentNullException(("transactionService"));
 
             _authMock = authMock;
-            _userProvider = userProvider;
-            _amountVerificationService = amountVerificationService;
+            _userProvider = userProvider;            
             _transactionService = transactionService;
         }
 
@@ -57,24 +47,7 @@ namespace TransactionSubsystem
             }
 
             return result;
-        }
-
-        // Post request by editing amount textBox
-        public bool VerifyDonorBalance(decimal transactionAmount)
-        {
-            bool result = false;
-
-            var isAmountValid = _amountVerificationService.VerifyAmount(_authMock.CurrentUser, transactionAmount);
-            _authMock.CurrentUser.PreparingTransaction.CommitAvailableState = isAmountValid;
-
-            if (isAmountValid)
-            {
-                _authMock.CurrentUser.PreparingTransaction.Amount = transactionAmount;
-                result = true;
-            }
-
-            return result;
-        }
+        }       
 
         // Post request by clicking SEND button
         public void CommitTransaction()

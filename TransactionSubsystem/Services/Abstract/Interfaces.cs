@@ -18,14 +18,7 @@ namespace Interfaces
         User GetUser(int userId);
         User GetUserByName(string userName);
         Task<IEnumerable<User>> GetUsers();
-    }
-
-
-
-    public interface IAmountVerificationService
-    {
-        bool VerifyAmount(User user, decimal amount);
-    }
+    }    
 
     public interface ITransactionService
     {

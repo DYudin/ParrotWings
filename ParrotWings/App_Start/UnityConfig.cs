@@ -39,10 +39,7 @@ namespace ParrotWings.App_Start
             
             container.RegisterType<IAuthenticationService, AuthenticationService>(
                 new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(userRepository, securityService));
-            container.RegisterType<IAmountVerificationService, AmountVerificationService>(
-                new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(userRepository));
+                new InjectionConstructor(userRepository, securityService));           
             container.RegisterType<ITransactionService, TransactionService>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(userRepository, transactionRepository));

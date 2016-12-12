@@ -52,7 +52,6 @@
   <ItemGroup>
     <Compile Include="ApiMock.cs" />
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Entities\Result.cs" />
     <Compile Include="Entities\Transaction.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Migrations\201612031211009_InitialCreate.cs" />
@@ -79,7 +78,6 @@
     <Compile Include="Repositories\Implementation\TransactionRepository.cs" />
     <Compile Include="Repositories\Implementation\UserRepository.cs" />
     <Compile Include="Services\Abstract\Interfaces.cs" />
-    <Compile Include="Services\Implementation\AmountVerificationService.cs" />
     <Compile Include="Services\Implementation\AuthenticationService.cs" />
     <Compile Include="Services\Implementation\SecurityService.cs" />
     <Compile Include="Services\Implementation\TransactionService.cs" />
@@ -87,9 +85,7 @@
     <Compile Include="Services\Mock\AuthMock.cs" />
     <Compile Include="Repositories\TransactionSubsystemContext.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Abstract\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

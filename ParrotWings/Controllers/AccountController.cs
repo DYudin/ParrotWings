@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Results;
 using Interfaces;
 using ParrotWings.ViewModel;
 using TransactionSubsystem.Repositories.Abstract;
@@ -106,16 +105,10 @@ public class AccountController : ApiController
 
     [Route("api/account/logout")]
     [HttpPost]
-    public async Task<IHttpActionResult> Logout()
+    public IHttpActionResult Logout()
     {
-        try
-        {
-            _authenticationService.CurrentUser = null;
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest();
-        }
+        _authenticationService.CurrentUser = null;
+        return Ok();
+        
     }
 }

@@ -7,7 +7,6 @@ import { User } from '../core/domain/user';
 import { Transaction } from '../core/domain/transaction';
 import { Pipe, PipeTransform } from "@angular/core";
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
-import { OrderByPipe } from '../core/services/OrderByPipe';
 
 @Component({
     selector: 'transaction',
@@ -30,8 +29,7 @@ export class TransactionComponent implements OnInit {
     private _isUserAuthenticated: boolean;
 
     constructor(public transactionService: DataService,
-        public authService: AuthenticationService) {
-       
+        public authService: AuthenticationService) {       
     }
 
     ngOnInit() {
@@ -43,7 +41,7 @@ export class TransactionComponent implements OnInit {
 		this._transaction = new Transaction();
     }
 
-    onUserModified(value) { // without type info
+    onUserModified(value) { 
         if (value == this._currentUser.UserName) {
             this._transaction.CorrespondedUserValid = false;
         }
@@ -52,13 +50,20 @@ export class TransactionComponent implements OnInit {
         }
     }
 
-    onAmountModified(value) { // without type info   
-        if (value > this._currentUser.CurrentBalance) {
+    onAmountModified(value) { 
+        if (value <= 0) {
             this._transaction.AmountValid = false;
         }
         else {
-            this._transaction.AmountValid = true;
+            if (value > this._currentUser.CurrentBalance) {
+                this._transaction.AmountValid = false;
+            }
+            else {
+                this._transaction.AmountValid = true;
+            }
         }
+
+       
     }
 
     getCurrentUserInfo(): void {
@@ -103,8 +108,7 @@ export class TransactionComponent implements OnInit {
     }
 
     verifyAmount(): void {
-	     this.transactionService.set(this._verifyAmountAPI);
-        //let user = this.authService.getLoggedInUser();
+	     this.transactionService.set(this._verifyAmountAPI);       
         let self = this;
         self.transactionService.post(this._transaction.Amount)
             .subscribe(res => {
@@ -120,7 +124,7 @@ export class TransactionComponent implements OnInit {
     send(): void {       
         this.transactionService.set(this._sendMoneyAPI);        
         var _sendResult: OperationResult = new OperationResult(false, '');
-        this._transaction.Date = new Date(); // toDO now
+        this._transaction.Date = new Date();
 
         // send transaction
         this.transactionService.post(this._transaction)
@@ -138,8 +142,7 @@ export class TransactionComponent implements OnInit {
                     this.getTransactions();
                 }
                 else {
-                    alert(_sendResult.Message);
-                    //this.notificationService.printErrorMessage(_authenticationResult.Message);
+                    alert(_sendResult.Message);                   
                 }
             });      
     };

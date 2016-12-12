@@ -10,7 +10,7 @@ namespace TransactionSubsystem.Entities
     public class Transaction
     {
         public int Id { get; set; }
-
+               
         [NotMapped]
         public bool CommitAvailableState { get; set; }
 

@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { Headers, RequestOptions, BaseRequestOptions } from '@angular/http';
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
-import { OrderByPipe } from './core/services/orderbypipe';
 
 import { AccountModule } from './components/account/account.module';
 import { AppComponent } from './app.component';
@@ -33,7 +32,7 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         routing,
         AccountModule,
         Ng2AutoCompleteModule],
-    declarations: [AppComponent, HomeComponent, TransactionComponent, OrderByPipe],
+    declarations: [AppComponent, HomeComponent, TransactionComponent],
     providers: [DataService, AuthenticationService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: RequestOptions, useClass: AppBaseRequestOptions }],
