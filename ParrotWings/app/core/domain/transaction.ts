@@ -4,6 +4,7 @@
     Date: Date;
     ResultingBalance: number;
     AmountValid: boolean;
+    CorrespondedUserValid: boolean;
 
     constructor(        
 		//amount: number,
@@ -13,6 +14,7 @@
 		) 
     {
         this.AmountValid = true;
+        this.CorrespondedUserValid = true;
         //this.Amount = amount;
         //this.RecepientName = recepientName;
 		//this.Date = date;

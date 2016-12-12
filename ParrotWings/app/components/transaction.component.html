@@ -20,10 +20,13 @@
         <!--Entering user-->
         <div class="row">
             <div class="form-group col-sm-4">
-                <input type="text" (ngModelChange)="onUserModified($event)" class="form-control input-sm" placeholder="Enter recepient name" [(ngModel)]="_transaction.CorrespondedUser"
+                <input type="text" auto-complete [source]="_usersStr" min-chars="1" (ngModelChange)="onUserModified($event)" class="form-control input-sm" placeholder="Enter recepient name" [(ngModel)]="_transaction.CorrespondedUser"
                        name="recepient" id="recepient" #recepient="ngModel" required />
-                <div [hidden]="recepient.valid || recepient.untouched" class="alert alert-danger">
+                <div [hidden]="amount.pristine || recepient.valid" class="alert alert-danger">
                     Recepient name is required
+                </div>
+                <div [hidden]="_transaction.CorrespondedUserValid" class="alert alert-danger">
+                    You can't send money to yourself
                 </div>
             </div>
             <div class="col-sm-8"></div>
@@ -47,7 +50,7 @@
         <!--Send button-->  
         <div class="row">
             <div class="form-group col-sm-2">
-                <button class="btn btn-primary btn-md btn-block" (click)="send()" [disabled]="!transactionForm.form.valid || !_transaction.AmountValid">Send money</button>
+                <button class="btn btn-primary btn-md btn-block" (click)="send()" [disabled]="!transactionForm.form.valid || !_transaction.AmountValid || !_transaction.CorrespondedUserValid">Send money</button>
             </div>
             <div class="col-sm-10"></div>
         </div>
@@ -64,7 +67,7 @@
                 <th>Resulting balance</th>
             </tr>
 
-            <tr *ngFor="let u of _transactions">
+            <tr *ngFor="let u of _transactions | orderBy: 'Date':'false'">
                 <td><span>{{u.Date | date:'medium'}}</span></td>
                 <td><span>{{u.CorrespondedUser}}</span></td>
                 <td><span>{{u.Amount}}</span></td>

@@ -6,10 +6,13 @@ import { Router } from '@angular/router';
 import { User } from '../core/domain/user';
 import { Transaction } from '../core/domain/transaction';
 import { Pipe, PipeTransform } from "@angular/core";
+import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+import { OrderByPipe } from '../core/services/OrderByPipe';
 
 @Component({
     selector: 'transaction',
     templateUrl: './app/components/transaction.component.html'
+    
 })
 export class TransactionComponent implements OnInit {
     private _transactionsAPI: string = 'api/transaction/alltransactions';
@@ -19,8 +22,8 @@ export class TransactionComponent implements OnInit {
     private _currentUserInfo: string = 'api/transaction/currentuserinfo';
     private _usersAPI: string = 'api/transaction/allusers';
 
-    private _transactions: Array<Transaction>;
-    private _users: Array<User>;
+    private _transactions: Array<Transaction> = [];  
+    private _usersStr: Array<string> = [];
     private _verifyAmountResult: boolean;
     private _transaction: Transaction;
     private _currentUser: User;
@@ -36,13 +39,17 @@ export class TransactionComponent implements OnInit {
         this._currentUser = new User('');
         this.getCurrentUserInfo();
         this.getUsers();        
-        this.getTransactions();
-
+        this.getTransactions();        
 		this._transaction = new Transaction();
     }
 
-    onUserModified(event: any) { // without type info
-        
+    onUserModified(value) { // without type info
+        if (value == this._currentUser.UserName) {
+            this._transaction.CorrespondedUserValid = false;
+        }
+        else {
+            this._transaction.CorrespondedUserValid = true;
+        }
     }
 
     onAmountModified(value) { // without type info   
@@ -80,8 +87,12 @@ export class TransactionComponent implements OnInit {
         let self = this;
         self.transactionService.get()
             .subscribe(res => {
-                var data: any = res.json();
-                self._users = data;
+                var data: any = res.json();              
+                for (let us of data) {
+                    if (us.UserName != this._currentUser.UserName) {
+                        this._usersStr.push(us.UserName);
+                    }
+                }
             },
             error => console.error('Error: ' + error));
     }

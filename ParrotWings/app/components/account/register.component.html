@@ -21,23 +21,23 @@
         </div>
     </div>
     <div class="form-group">
-        <input type="password" class="form-control input-md" placeholder="Password" [(ngModel)]="_newUser.Password"
+        <input type="password" class="form-control input-md" (ngModelChange)="onPassModified($event)" placeholder="Password" [(ngModel)]="_newUser.Password"
                name="password" #password="ngModel" required>
         <div [hidden]="password.valid || (password.pristine && !registerForm.submitted)" class="alert alert-danger">
             Password is required
         </div>
     </div> 
     <div class="form-group">
-        <input type="password" class="form-control input-md" placeholder="Repeat Password" [(ngModel)]="_newUser.PasswordConfirmation"
-               name="confirmPassword" #confirmPassword="ngModel" required validateEqual="password">
+        <input type="password" class="form-control input-md" (ngModelChange)="onPassConfModified($event)" placeholder="Repeat Password" [(ngModel)]="_newUser.PasswordConfirmation"
+               name="confirmPassword" #confirmPassword="ngModel" required>
         <div [hidden]="confirmPassword.valid ||  (confirmPassword.pristine && !registerForm.submitted)" class="alert alert-danger">
             Password confirmation is required
         </div>
-        <!--<div [hidden]="confirmPassword.valid || (confirmPassword.pristine && !f.submitted)" class="alert alert-danger">
+        <div [hidden]="confirmPassword.pristine && !registerForm.submitted || (!confirmPassword.pristine && _newUser.PasswordConfirmation == _newUser.Password)" class="alert alert-danger">
             Password's confirmation does not match with password
-        </div>-->
+        </div>
     </div>
     <div class="form-group">
-        <button class="btn btn-primary btn-md btn-block" (click)="register()" [disabled]="!registerForm.form.valid">Register</button>
+        <button class="btn btn-primary btn-md btn-block" (click)="register()" [disabled]="!registerForm.form.valid || !_newUser.PasswordConfirmed">Register</button>
     </div>
 </form>

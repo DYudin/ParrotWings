@@ -4,6 +4,8 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { Headers, RequestOptions, BaseRequestOptions } from '@angular/http';
+import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+import { OrderByPipe } from './core/services/orderbypipe';
 
 import { AccountModule } from './components/account/account.module';
 import { AppComponent } from './app.component';
@@ -11,12 +13,8 @@ import { HomeComponent } from './components/home.component';
 import { TransactionComponent } from './components/transaction.component';
 
 import { routing } from './routes';
-
-import { EqualValidator } from './components/account/equal-validator.directive';
 import { DataService } from './core/services/data.service';
 import { AuthenticationService } from './core/services/authentication.service';
-//import { UtilityService } from './core/services/utility.service';
-//import { NotificationService } from './core/services/notification.service';
 
 class AppBaseRequestOptions extends BaseRequestOptions {
     headers: Headers = new Headers();
@@ -33,9 +31,10 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         FormsModule,
         HttpModule,
         routing,
-        AccountModule ],
-    declarations: [AppComponent, HomeComponent, TransactionComponent, EqualValidator ],
-    providers: [DataService, AuthenticationService, //NotificationService,
+        AccountModule,
+        Ng2AutoCompleteModule],
+    declarations: [AppComponent, HomeComponent, TransactionComponent, OrderByPipe],
+    providers: [DataService, AuthenticationService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: RequestOptions, useClass: AppBaseRequestOptions }],
   bootstrap:    [ AppComponent ]

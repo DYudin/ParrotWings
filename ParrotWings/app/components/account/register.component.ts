@@ -3,12 +3,10 @@ import { Router } from '@angular/router';
 import { Registration } from '../../core/domain/registration';
 import { OperationResult } from '../../core/domain/operationResult';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { EqualValidator } from './equal-validator.directive';
-//import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
     selector: 'register',
-    providers: [AuthenticationService], //, NotificationService
+    providers: [AuthenticationService], 
     templateUrl: './app/components/account/register.component.html'
 })
 export class RegisterComponent implements OnInit {
@@ -16,11 +14,28 @@ export class RegisterComponent implements OnInit {
     private _newUser: Registration;
 
     constructor(public authService: AuthenticationService,
-        //public notificationService: NotificationService,
         public router: Router) { }
 
     ngOnInit() {
         this._newUser = new Registration('', '', '');
+    }
+    
+    onPassModified(value) { 
+        if (value != this._newUser.PasswordConfirmation) {
+            this._newUser.PasswordConfirmed = false;
+        }
+        else {
+            this._newUser.PasswordConfirmed = true;
+        }
+    }
+
+    onPassConfModified(value) {
+        if (value != this._newUser.Password) {
+            this._newUser.PasswordConfirmed = false;
+        }
+        else {
+            this._newUser.PasswordConfirmed = true;
+        }
     }
 
     register(): void {

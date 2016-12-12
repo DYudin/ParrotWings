@@ -55,6 +55,8 @@ namespace ParrotWings.Controllers
 
             foreach (var tr in transactions)
             {
+
+                //TODO: CLear
                 if (tr.Recepient == null)
                 {
                     tr.Recepient = new User (){ Name = "UnknownRecepient" };
@@ -152,7 +154,7 @@ namespace ParrotWings.Controllers
                     commitTransactionResult = new Result()
                     {
                         Succeeded = false,
-                        Message = "User with name: {{transactionVM.RecepientName}} not found"
+                        Message = $"User with name: '{transactionVM.CorrespondedUser}' not found"
                     };
                 }
                 else
