@@ -44,8 +44,7 @@ namespace ParrotWings.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetTransactions()
         {
-            var transactionsVM = new List<TransactionViewModel>();
-            Result getTransactionsResult = null;
+            var transactionsVM = new List<TransactionViewModel>();            
 
             try
             {
@@ -77,23 +76,13 @@ namespace ParrotWings.Controllers
                         Outgoing = tr.Recepient.Name != _authenticationService.CurrentUser.Name
 
                     });
-                }
-
-                getTransactionsResult = new Result()
-                {
-                    Succeeded = true,
-                    Message = "Transaction succeeded"
-                };
-
+                }  
             }
             catch (Exception)
             {
-                getTransactionsResult = new Result()
-                {
-                    Succeeded = false,
-                    Message = "Error getting user's transactions"
-                };
-            }            
+                //TODO: logging
+                throw new InvalidOperationException("Error getting transactions");
+            }
 
             return Ok(transactionsVM);
         }
@@ -103,8 +92,7 @@ namespace ParrotWings.Controllers
         public async Task<IHttpActionResult> GetUsers()
         {
             var usersVM = new List<UserViewModel>();
-            Result getUsersResult = null;
-
+           
             try
             {
                 IEnumerable<User> users = await _userProvider.GetUsers();
@@ -116,11 +104,8 @@ namespace ParrotWings.Controllers
             }
             catch (Exception)
             {
-                getUsersResult = new Result()
-                {
-                    Succeeded = false,
-                    Message = "Error getting users"
-                };
+                //TODO: logging
+                throw new InvalidOperationException("Error getting users");             
             }
 
             return Ok(usersVM);
