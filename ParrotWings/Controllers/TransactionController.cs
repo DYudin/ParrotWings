@@ -45,35 +45,55 @@ namespace ParrotWings.Controllers
         public async Task<IHttpActionResult> GetTransactions()
         {
             var transactionsVM = new List<TransactionViewModel>();
-            IEnumerable<Transaction> transactions = await _transactionService.GetTransactionsByUserName(_authenticationService.CurrentUser.Name);
+            Result getTransactionsResult = null;
 
-            foreach (var tr in transactions)
+            try
             {
-                //TODO: CLear
-                if (tr.Recepient == null)
+                IEnumerable<Transaction> transactions = await _transactionService.GetTransactionsByUserName(_authenticationService.CurrentUser.Name);
+
+                foreach (var tr in transactions)
                 {
-                    tr.Recepient = new User (){ Name = "UnknownRecepient" };
+                    //TODO: CLear
+                    if (tr.Recepient == null)
+                    {
+                        tr.Recepient = new User() { Name = "UnknownRecepient" };
+                    }
+
+                    if (tr.TransactionOwner == null)
+                    {
+                        tr.TransactionOwner = new User() { Name = "UnknownOwner" };
+                    }
+
+                    transactionsVM.Add(new TransactionViewModel()
+                    {
+                        Amount = tr.Amount,
+                        Date = tr.Date,
+                        CorrespondedUser = tr.Recepient.Name == _authenticationService.CurrentUser.Name
+                        ? tr.TransactionOwner.Name
+                        : tr.Recepient.Name,
+                        ResultingBalance = tr.Recepient.Name == _authenticationService.CurrentUser.Name
+                        ? tr.RecepientResultingBalance
+                        : tr.OwnerResultingBalance,
+                        Outgoing = tr.Recepient.Name != _authenticationService.CurrentUser.Name
+
+                    });
                 }
 
-                if (tr.TransactionOwner == null)
+                getTransactionsResult = new Result()
                 {
-                    tr.TransactionOwner = new User() { Name = "UnknownOwner" };
-                }
+                    Succeeded = true,
+                    Message = "Transaction succeeded"
+                };
 
-                transactionsVM.Add(new TransactionViewModel()
-                {
-                    Amount = tr.Amount,
-                    Date = tr.Date,
-                    CorrespondedUser = tr.Recepient.Name == _authenticationService.CurrentUser.Name
-                    ? tr.TransactionOwner.Name
-                    : tr.Recepient.Name,
-                    ResultingBalance = tr.Recepient.Name == _authenticationService.CurrentUser.Name 
-                    ? tr.RecepientResultingBalance 
-                    : tr.OwnerResultingBalance,
-                    Outgoing = tr.Recepient.Name != _authenticationService.CurrentUser.Name
-
-                });
             }
+            catch (Exception)
+            {
+                getTransactionsResult = new Result()
+                {
+                    Succeeded = false,
+                    Message = "Error getting user's transactions"
+                };
+            }            
 
             return Ok(transactionsVM);
         }
@@ -83,11 +103,24 @@ namespace ParrotWings.Controllers
         public async Task<IHttpActionResult> GetUsers()
         {
             var usersVM = new List<UserViewModel>();
-            IEnumerable<User> users = await _userProvider.GetUsers();
-                
-            foreach (var user in users)
+            Result getUsersResult = null;
+
+            try
             {
-                usersVM.Add(new UserViewModel() { UserName = user.Name, Id = user.Id });
+                IEnumerable<User> users = await _userProvider.GetUsers();
+
+                foreach (var user in users)
+                {
+                    usersVM.Add(new UserViewModel() { UserName = user.Name, Id = user.Id });
+                }
+            }
+            catch (Exception)
+            {
+                getUsersResult = new Result()
+                {
+                    Succeeded = false,
+                    Message = "Error getting users"
+                };
             }
 
             return Ok(usersVM);
