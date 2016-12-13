@@ -3,13 +3,11 @@
 ################################################################################
 
 /ParrotWings/obj/Debug
-/ParrotWings/e2e
 /ParrotWings/obj/Release
 /ParrotWings/bin
 /TransactionSubsystem/obj
 /TransactionSubsystem/bin/Debug
 /TransactionSubsystem.Console/obj/Debug
 /TransactionSubsystem.Console/bin/Debug
-/.vscode
 /ParrotWings.sln.DotSettings.user
-/ParrotWings/node_modules.rar
+
