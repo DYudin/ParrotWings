@@ -40,7 +40,7 @@
                 <div [hidden]="amount.valid || amount.untouched" class="alert alert-danger">
                     Amount is required
                 </div>
-                <div [hidden]="amount.pristine || _transaction.AmountValid" class="alert alert-danger">
+                <div [hidden]="amount.pristine || _transaction.AmountValid || _transaction.Amount ==null" class="alert alert-danger">
                     Invalid amount value
                 </div>
             </div>

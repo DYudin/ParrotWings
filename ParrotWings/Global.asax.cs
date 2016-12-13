@@ -12,7 +12,7 @@ namespace ParrotWings
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
 
-        protected void Application_Disposed()
+        protected void Application_End()
         {
             UnityWebActivator.Shutdown();
         }

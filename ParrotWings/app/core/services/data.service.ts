@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 export class DataService {
 
     public _baseUri: string;
-	 public _baseUri2: string;
 
     constructor(public http: Http) {
 

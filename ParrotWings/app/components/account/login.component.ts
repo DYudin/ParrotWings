@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Credentials } from '../../core/domain/credentials';
 import { OperationResult } from '../../core/domain/operationResult';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { NotificationService } from '../../core/services/notification.service';
 import { User } from '../../core/domain/user';
 
 @Component({
@@ -15,7 +14,6 @@ export class LoginComponent implements OnInit {
     private _currentUser: User;
 
     constructor(public authService: AuthenticationService,
-        //public notificationService: NotificationService,
         public router: Router) { }
 
     ngOnInit() {
@@ -33,15 +31,13 @@ export class LoginComponent implements OnInit {
             error => console.error('Error: ' + error),
             () => {
                 if (_authenticationResult.Succeeded) {
-                    alert(_authenticationResult.Message);
-                    //this.notificationService.printSuccessMessage('Welcome back ' + this._user.Username + '!');                
+                    alert(_authenticationResult.Message);                              
                     this._currentUser = new User(this._credentials.Email);
                     localStorage.setItem('user', JSON.stringify(this._currentUser));
                     this.router.navigate(['home']);
                 }
                 else {
-                    alert(_authenticationResult.Message);
-                    //this.notificationService.printErrorMessage(_authenticationResult.Message);
+                    alert(_authenticationResult.Message);                  
                 }
             });
     };

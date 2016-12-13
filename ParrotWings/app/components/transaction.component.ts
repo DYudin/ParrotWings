@@ -15,15 +15,12 @@ import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
 })
 export class TransactionComponent implements OnInit {
     private _transactionsAPI: string = 'api/transaction/alltransactions';
-	private _verifyAmountAPI: string = 'api/transaction/verifyamount';
-    private _verifyUserAPI: string = 'api/transaction/verifyuser';
     private _sendMoneyAPI: string = 'api/transaction/sendmoney';
     private _currentUserInfo: string = 'api/transaction/currentuserinfo';
     private _usersAPI: string = 'api/transaction/allusers';
 
     private _transactions: Array<Transaction> = [];  
     private _usersStr: Array<string> = [];
-    private _verifyAmountResult: boolean;
     private _transaction: Transaction;
     private _currentUser: User;
     private _isUserAuthenticated: boolean;
@@ -103,21 +100,7 @@ export class TransactionComponent implements OnInit {
                 }
             },
             error => console.error('Error: ' + error));
-    }
-
-    verifyAmount(): void {
-	     this.transactionService.set(this._verifyAmountAPI);       
-        let self = this;
-        self.transactionService.post(this._transaction.Amount)
-            .subscribe(res => {
-
-                self._verifyAmountResult = true;
-            },
-            error => {
-                console.error('Error: ' + error);
-                self._verifyAmountResult = false;
-            });
-    }
+    }   
 
     send(): void {       
         this.transactionService.set(this._sendMoneyAPI);        

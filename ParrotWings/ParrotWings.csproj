@@ -156,7 +156,6 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="app\app.component.spec.ts" />
     <TypeScriptCompile Include="app\app.component.ts" />
     <TypeScriptCompile Include="app\app.module.ts" />
     <TypeScriptCompile Include="app\components\account\account.component.ts" />
@@ -172,7 +171,6 @@
     <TypeScriptCompile Include="app\core\domain\user.ts" />
     <TypeScriptCompile Include="app\core\services\authentication.service.ts" />
     <TypeScriptCompile Include="app\core\services\data.service.ts" />
-    <TypeScriptCompile Include="app\core\services\notification.service.ts" />
     <TypeScriptCompile Include="app\main.ts" />
     <TypeScriptCompile Include="app\routes.ts" />
   </ItemGroup>
