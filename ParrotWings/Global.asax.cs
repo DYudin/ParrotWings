@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿
 using System.Web.Http;
-using System.Web.Routing;
 using ParrotWings.App_Start;
 
 namespace ParrotWings
@@ -12,13 +8,13 @@ namespace ParrotWings
     {
         protected void Application_Start()
         {
-            UnityConfig.RegisterComponents();
+            UnityWebActivator.Start();
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
 
-        protected void Application_End()
+        protected void Application_Disposed()
         {
-            //UnityConfig.DisposeComponents();            
+            UnityWebActivator.Shutdown();
         }
     }
 }

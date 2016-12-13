@@ -42,10 +42,10 @@ namespace ParrotWings.Controllers
 
         [Route("api/transaction/alltransactions")]
         [HttpGet]
-        public IHttpActionResult GetTransactions()
+        public async Task<IHttpActionResult> GetTransactions()
         {
             var transactionsVM = new List<TransactionViewModel>();
-            IEnumerable<Transaction> transactions = _transactionService.GetTransactionsByUserName(_authenticationService.CurrentUser.Name);
+            IEnumerable<Transaction> transactions = await _transactionService.GetTransactionsByUserName(_authenticationService.CurrentUser.Name);
 
             foreach (var tr in transactions)
             {

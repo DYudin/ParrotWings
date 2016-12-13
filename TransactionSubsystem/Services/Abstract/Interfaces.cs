@@ -22,7 +22,7 @@ namespace Interfaces
 
     public interface ITransactionService
     {
-        IEnumerable<Transaction> GetTransactionsByUserName(string userName);
+        Task<IEnumerable<Transaction>> GetTransactionsByUserName(string userName);
         Task CommitTransaction(Transaction transaction);
     }
 

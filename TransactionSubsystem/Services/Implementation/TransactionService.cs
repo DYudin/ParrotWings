@@ -21,10 +21,9 @@ namespace TransactionSubsystem.Services.Implementation
             _transactionRepository = transactionRepository;
         }
 
-        public IEnumerable<Transaction> GetTransactionsByUserName(string userName)
-        {            
-            var list = _transactionRepository.FindByIncluding(x => x.TransactionOwner.Name == userName || x.Recepient.Name == userName).AsEnumerable();
-            return list;
+        public Task<IEnumerable<Transaction>> GetTransactionsByUserName(string userName)
+        {
+            return Task.Run(() => _transactionRepository.FindByIncluding(x => x.TransactionOwner.Name == userName || x.Recepient.Name == userName).AsEnumerable());
         }
 
         public Task CommitTransaction(Transaction transaction)

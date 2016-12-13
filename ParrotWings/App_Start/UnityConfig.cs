@@ -1,53 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿
 using Microsoft.Practices.Unity;
-using System.Web.Http;
 using Interfaces;
 using TransactionSubsystem.Repositories;
 using TransactionSubsystem.Repositories.Abstract;
 using TransactionSubsystem.Repositories.Implementation;
 using TransactionSubsystem.Services.Implementation;
-using Unity.WebApi;
 
 namespace ParrotWings.App_Start
 {
     public static class UnityConfig
     {
-        public static void RegisterComponents()
+        private static UnityContainer _container;
+        private static TransactionSubsystemContext _context;
+
+        public static UnityContainer GetConfiguredContainer()
         {
-            var container = new UnityContainer();
+            return _container ?? (_container = new UnityContainer());
+        }
 
-            // Context
-            var context = new TransactionSubsystemContext();
+        public static TransactionSubsystemContext GetContext()
+        {
+            return _context ?? (_context = new TransactionSubsystemContext());
+        }
 
+        public static void RegisterComponents()
+        {     
             // Repositories
-            container.RegisterType<IUserRepository, UserRepository>(
+            _container.RegisterType<IUserRepository, UserRepository>(
                 new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(context));
-            container.RegisterType<ITransactionRepository, TransactionRepository>(
+                new InjectionConstructor(_context));
+            _container.RegisterType<ITransactionRepository, TransactionRepository>(
                 new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(context));
-            container.RegisterType<ISecurityService, SecurityService>();
+                new InjectionConstructor(_context));
+            _container.RegisterType<ISecurityService, SecurityService>();
 
-            var userRepository = container.Resolve<IUserRepository>();
-            var transactionRepository = container.Resolve<ITransactionRepository>();
+            var userRepository = _container.Resolve<IUserRepository>();
+            var transactionRepository = _container.Resolve<ITransactionRepository>();
 
             // Services
-            var securityService = container.Resolve<ISecurityService>();
-            
-            container.RegisterType<IAuthenticationService, AuthenticationService>(
-                new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(userRepository, securityService));           
-            container.RegisterType<ITransactionService, TransactionService>(
-                new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(userRepository, transactionRepository));
-            container.RegisterType<IUserProvider, UserProvider>(
+            var securityService = _container.Resolve<ISecurityService>();
+
+            _container.RegisterType<IAuthenticationService, AuthenticationService>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(userRepository, securityService));
-
-            GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
+            _container.RegisterType<ITransactionService, TransactionService>(
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(userRepository, transactionRepository));
+            _container.RegisterType<IUserProvider, UserProvider>(
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(userRepository, securityService));            
         }
     }
 }
