@@ -10,7 +10,7 @@ namespace ParrotWings.Controllers
         [HttpGet]
         public IHttpActionResult Start()
         {
-            return Ok("Done");
+            return Ok("Warm up completed");
         }
     }
 }

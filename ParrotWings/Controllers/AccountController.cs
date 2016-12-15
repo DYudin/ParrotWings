@@ -16,6 +16,10 @@ public class AccountController : ApiController
                              IUserRepository userRepository,
                              IUserProvider userProvider)
     {
+        if (authenticationService == null) throw new ArgumentNullException(("authenticationService"));
+        if (userRepository == null) throw new ArgumentNullException(("userRepository"));
+        if (userProvider == null) throw new ArgumentNullException(("userProvider"));
+
         _authenticationService = authenticationService;
         _userRepository = userRepository;
         _userProvider = userProvider;

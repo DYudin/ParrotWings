@@ -10,9 +10,11 @@ import { AccountModule } from './components/account/account.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home.component';
 import { TransactionComponent } from './components/transaction.component';
+import { ErrorComponent } from './components/error.component';
 
 import { routing } from './routes';
 import { DataService } from './core/services/data.service';
+import { ErrorService } from './core/services/error.service';
 import { AuthenticationService } from './core/services/authentication.service';
 
 class AppBaseRequestOptions extends BaseRequestOptions {
@@ -32,8 +34,8 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         routing,
         AccountModule,
         Ng2AutoCompleteModule],
-    declarations: [AppComponent, HomeComponent, TransactionComponent],
-    providers: [DataService, AuthenticationService,
+    declarations: [AppComponent, HomeComponent, TransactionComponent, ErrorComponent],
+    providers: [DataService, AuthenticationService, ErrorService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: RequestOptions, useClass: AppBaseRequestOptions }],
   bootstrap:    [ AppComponent ]

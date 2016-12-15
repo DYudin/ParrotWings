@@ -99,6 +99,7 @@
     <Content Include="app\components\account\account.component.html" />
     <Content Include="app\components\account\login.component.html" />
     <Content Include="app\components\account\register.component.html" />
+    <Content Include="app\components\error.component.html" />
     <Content Include="app\components\transaction.component.html" />
     <Content Include="app\core\domain\credentials.ts" />
     <Content Include="Global.asax" />
@@ -163,6 +164,7 @@
     <TypeScriptCompile Include="app\components\account\login.component.ts" />
     <TypeScriptCompile Include="app\components\account\register.component.ts" />
     <TypeScriptCompile Include="app\components\account\routes.ts" />
+    <TypeScriptCompile Include="app\components\error.component.ts" />
     <TypeScriptCompile Include="app\components\home.component.ts" />
     <TypeScriptCompile Include="app\components\transaction.component.ts" />
     <TypeScriptCompile Include="app\core\domain\operationResult.ts" />
@@ -171,6 +173,7 @@
     <TypeScriptCompile Include="app\core\domain\user.ts" />
     <TypeScriptCompile Include="app\core\services\authentication.service.ts" />
     <TypeScriptCompile Include="app\core\services\data.service.ts" />
+    <TypeScriptCompile Include="app\core\services\error.service.ts" />
     <TypeScriptCompile Include="app\main.ts" />
     <TypeScriptCompile Include="app\routes.ts" />
   </ItemGroup>
