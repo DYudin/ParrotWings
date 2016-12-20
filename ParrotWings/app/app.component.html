@@ -1,10 +1,10 @@
-﻿<div class="row" [hidden]="servicesInitialized || servicesInitFailed">
+﻿<div class="row" *ngIf="!servicesInitialized && !servicesInitFailed">
     <div class="col-md-6">
         Initializing services. It may take some time. Please wait...
     </div>
 </div>
 
-<div class="row" [hidden]="!servicesInitialized">
+<div class="row" *ngIf="servicesInitialized">
     <a class="col-md-2" routerLink="/home"><i class="fa fa-home fa-fw"></i>&nbsp;Home</a>
     
     <div class="col-md-2">

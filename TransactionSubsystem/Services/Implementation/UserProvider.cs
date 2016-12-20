@@ -32,6 +32,10 @@ namespace TransactionSubsystem.Services.Implementation
 
         public Task<User> CreateUser(string userName, string email, string password)
         {
+            if (string.IsNullOrWhiteSpace(userName)) throw new ArgumentException(userName);
+            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException(email);
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException(password);
+
             return Task.Run(() => CreateUserInternal(userName, email, password));
         }
 

@@ -23,18 +23,23 @@ namespace TransactionSubsystem.Services.Implementation
 
         public Task<IEnumerable<Transaction>> GetTransactionsByUserName(string userName)
         {
+            if (string.IsNullOrWhiteSpace(userName)) throw new ArgumentException(userName);
+
             return Task.Run(() => _transactionRepository.FindByIncluding(x => x.TransactionOwner.Name == userName || x.Recepient.Name == userName).AsEnumerable());
         }
 
         public Task CommitTransaction(Transaction transaction)
         {
+            if (transaction == null) throw new ArgumentNullException("Transaction");
+            if (transaction.Amount <= 0 ) throw new ArgumentException("Transaction amount must be greater than 0");
+            if (transaction.TransactionOwner.Name == transaction.Recepient.Name) throw new ArgumentNullException("Recipient must be different from the transaction sender");
+            if (transaction.Amount > transaction.TransactionOwner.CurrentBalance) throw new ArgumentNullException("Not enough money");
+
             return Task.Run(() => CommitTransactionInternal(transaction));
         }
 
-        public void CommitTransactionInternal(Transaction transaction)
-        {
-            if (transaction == null) throw new ArgumentNullException(("transaction"));
-
+        private void CommitTransactionInternal(Transaction transaction)
+        {      
             // 0. prepare
             transaction.TransactionOwner.CurrentBalance -= transaction.Amount;
             transaction.Recepient.CurrentBalance += transaction.Amount;
@@ -50,8 +55,7 @@ namespace TransactionSubsystem.Services.Implementation
             _transactionRepository.Add(transaction);
 
             // 4. commit
-            _userRepository.Commit();
-            //_transactionRepository.Commit();
+            _userRepository.Commit();          
         }
     }
 }

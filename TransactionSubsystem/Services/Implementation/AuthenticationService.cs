@@ -36,6 +36,9 @@ namespace TransactionSubsystem.Services.Implementation
 
         public Task<bool> Login(string email, string password)
         {
+            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException(email);
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException(password);
+
             return Task.Run(() => LoginInternal(email, password));
         }
 

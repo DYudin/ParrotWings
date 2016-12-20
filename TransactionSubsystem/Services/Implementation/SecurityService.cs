@@ -18,6 +18,9 @@ namespace TransactionSubsystem.Services.Implementation
 
         public string EncryptPassword(string password, string salt)
         {
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException(password);
+            if (string.IsNullOrWhiteSpace(salt)) throw new ArgumentException(salt);
+
             using (var sha256 = SHA256.Create())
             {
                 var saltedPassword = string.Format("{0}{1}", salt, password);
