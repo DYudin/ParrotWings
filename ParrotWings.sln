@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParrotWings", "ParrotWings\ParrotWings.csproj", "{E410BD17-B105-4DD3-9B7F-F0A47A59A8CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParrotWings.Web", "ParrotWings\ParrotWings.Web.csproj", "{E410BD17-B105-4DD3-9B7F-F0A47A59A8CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSubsystem.BL", "TransactionSubsystem\TransactionSubsystem.BL.csproj", "{97923919-89FE-4407-9B5A-8F26332C1C35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParrotWings.TransactionSubsystem", "TransactionSubsystem\ParrotWings.TransactionSubsystem.csproj", "{97923919-89FE-4407-9B5A-8F26332C1C35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

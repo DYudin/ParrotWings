@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using ParrotWings.Filters;
 
 namespace ParrotWings
 {
@@ -13,7 +14,7 @@ namespace ParrotWings
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-
+            config.Filters.Add(new ValidateModelAttribute());
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

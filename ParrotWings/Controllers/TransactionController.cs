@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using Interfaces;
 using ParrotWings.ViewModel;
 using TransactionSubsystem.Entities;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace ParrotWings.Controllers
 {
@@ -33,7 +35,7 @@ namespace ParrotWings.Controllers
         [HttpGet]
         public IHttpActionResult GetCurrentUserInfo()
         {            
-            UserViewModel userVM = new UserViewModel() {
+            var userVM = new UserViewModel() {
                 UserName = _authenticationService.CurrentUser.Name,
                 CurrentBalance = _authenticationService.CurrentUser.CurrentBalance };
                    
@@ -44,44 +46,37 @@ namespace ParrotWings.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetTransactions()
         {
-            var transactionsVM = new List<TransactionViewModel>();            
+            List<TransactionViewModel> transactionsVM;            
 
             try
             {
-                IEnumerable<Transaction> transactions = await _transactionService.GetTransactionsByUserName(_authenticationService.CurrentUser.Name);
+                var transactions = await _transactionService.GetTransactionsByUserName(_authenticationService.CurrentUser.Name); //todo //unitOfWork.Drinks.GetAll()
+                var transactionsList = transactions.ToList();
 
-                foreach (var tr in transactions)
-                {
-                    //TODO: CLear
-                    if (tr.Recepient == null)
-                    {
-                        tr.Recepient = new User() { Name = "UnknownRecepient" };
-                    }
-
-                    if (tr.TransactionOwner == null)
-                    {
-                        tr.TransactionOwner = new User() { Name = "UnknownOwner" };
-                    }
-
-                    transactionsVM.Add(new TransactionViewModel()
-                    {
-                        Amount = tr.Amount,
-                        Date = tr.Date,
-                        CorrespondedUser = tr.Recepient.Name == _authenticationService.CurrentUser.Name
-                        ? tr.TransactionOwner.Name
-                        : tr.Recepient.Name,
-                        ResultingBalance = tr.Recepient.Name == _authenticationService.CurrentUser.Name
-                        ? tr.RecepientResultingBalance
-                        : tr.OwnerResultingBalance,
-                        Outgoing = tr.Recepient.Name != _authenticationService.CurrentUser.Name
-
-                    });
-                }  
+                Mapper.Initialize(cfg => cfg.CreateMap<Transaction, TransactionViewModel>()
+                .ForMember(
+                    dest => dest.CorrespondedUser, 
+                    opt => opt.MapFrom(
+                        src => src.Recepient.Name == _authenticationService.CurrentUser.Name ?
+                        src.TransactionOwner.Name :
+                        src.Recepient.Name))
+                .ForMember(
+                    dest => dest.ResultingBalance, 
+                    opt => opt.MapFrom(
+                        src => src.Recepient.Name == _authenticationService.CurrentUser.Name
+                        ? src.RecepientResultingBalance
+                        : src.OwnerResultingBalance))
+                .ForMember(
+                    dest => dest.Outgoing, 
+                    opt => opt.MapFrom(
+                        src => src.Recepient.Name != _authenticationService.CurrentUser.Name)));
+                transactionsVM = Mapper.Map<IEnumerable<Transaction>, List<TransactionViewModel>>(transactionsList); 
+             
             }
             catch (Exception)
             {
                 //TODO: logging
-                throw new InvalidOperationException("Error getting transactions");
+                return BadRequest("Error getting transactions");
             }
 
             return Ok(transactionsVM);
@@ -91,21 +86,18 @@ namespace ParrotWings.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetUsers()
         {
-            var usersVM = new List<UserViewModel>();
+            List<UserViewModel> usersVM;
            
             try
             {
-                IEnumerable<User> users = await _userProvider.GetUsers();
-
-                foreach (var user in users)
-                {
-                    usersVM.Add(new UserViewModel() { UserName = user.Name, Id = user.Id });
-                }
+                var users = await _userProvider.GetUsers();
+                Mapper.Initialize(cfg => cfg.CreateMap<User, UserViewModel>());
+                usersVM = Mapper.Map<IEnumerable<User>, List<UserViewModel>>(users); //todo unitOfWork.Drinks.GetAll()
             }
             catch (Exception)
             {
                 //TODO: logging
-                throw new InvalidOperationException("Error getting users");             
+                return BadRequest("Error getting users");
             }
 
             return Ok(usersVM);
@@ -116,46 +108,48 @@ namespace ParrotWings.Controllers
         public async Task<IHttpActionResult> CommitTransaction(TransactionViewModel transactionVM)
         {
             Result commitTransactionResult = null;
-            
-            try
-            {
-                var transactionOwner = _userProvider.GetUserByName(_authenticationService.CurrentUser.Name);
-                var recepient = _userProvider.GetUserByName(transactionVM.CorrespondedUser);
 
-                if (recepient == null)
+            if (ModelState.IsValid)
+            {
+                try
                 {
-                    commitTransactionResult = new Result()
+                    var transactionOwner = _userProvider.GetUserByName(_authenticationService.CurrentUser.Name); //todo unitOfWork.Drinks.GetAll() // todo await
+                    var recepient = _userProvider.GetUserByName(transactionVM.CorrespondedUser); //todo unitOfWork.Drinks.GetAll()// todo await
+
+                    if (recepient == null)
                     {
-                        Succeeded = false,
-                        Message = $"User with name: '{transactionVM.CorrespondedUser}' not found"
-                    };
+                        commitTransactionResult = new Result()
+                        {
+                            Succeeded = false,
+                            Message = $"User with name: '{transactionVM.CorrespondedUser}' not found"
+                        };
+                    }
+                    else
+                    {
+                        Mapper.Initialize(cfg => cfg.CreateMap<TransactionViewModel, Transaction>()
+                        .ForMember(
+                            dest => dest.Recepient,
+                            opt => opt.MapFrom(
+                                src => recepient))
+                        .ForMember(
+                            dest => dest.TransactionOwner,
+                            opt => opt.MapFrom(
+                                src => transactionOwner)));
+                        var transaction = Mapper.Map<TransactionViewModel, Transaction>(transactionVM);
+
+                        await _transactionService.CommitTransaction(transaction);
+
+                        commitTransactionResult = new Result()
+                        {
+                            Succeeded = true,
+                            Message = "Transaction succeeded"
+                        };
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    var transactionToSend = new Transaction()
-                    {
-                        Recepient = recepient,
-                        TransactionOwner = transactionOwner,
-                        Amount = transactionVM.Amount,
-                        Date = transactionVM.Date
-                    };
-
-                    await _transactionService.CommitTransaction(transactionToSend);
-
-                    commitTransactionResult = new Result()
-                    {
-                        Succeeded = true,
-                        Message = "Transaction succeeded"
-                    };
-                }  
-            }
-            catch (Exception ex)
-            {
-                commitTransactionResult = new Result()
-                {
-                    Succeeded = false,
-                    Message = ex.Message
-                };
+                    return BadRequest("Transaction failed");
+                }
             }
 
             return Ok(commitTransactionResult);
