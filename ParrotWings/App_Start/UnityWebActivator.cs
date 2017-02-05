@@ -1,6 +1,7 @@
 ﻿
 using Unity.WebApi;
 using System.Web.Http;
+using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
 namespace ParrotWings.App_Start
 {
@@ -9,10 +10,10 @@ namespace ParrotWings.App_Start
         /// <summary>Integrates Unity when the application starts.</summary>
         public static void Start()
         {
-            UnityConfig.GetContext();
+            //UnityConfig.GetContext();
             var container = UnityConfig.GetConfiguredContainer();
-            UnityConfig.RegisterComponents();                                          
-            GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);            
+            GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
+            //DynamicModuleUtility.RegisterModule(typeof(UnityPerRequestHttpModule));
         }
 
         /// <summary>Disposes the Unity container when the application is shut down.</summary>
@@ -20,8 +21,8 @@ namespace ParrotWings.App_Start
         {
             var container = UnityConfig.GetConfiguredContainer();
             container.Dispose();
-            var context = UnityConfig.GetContext();
-            context.Dispose();
+            //var context = UnityConfig.GetContext();
+            //context.Dispose();
         }
     }
 }

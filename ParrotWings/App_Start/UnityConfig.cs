@@ -5,17 +5,27 @@ using TransactionSubsystem.Repositories;
 using TransactionSubsystem.Repositories.Abstract;
 using TransactionSubsystem.Repositories.Implementation;
 using TransactionSubsystem.Services.Implementation;
+using System.Data.Entity;
+using TransactionSubsystem.Infrastructure.UnitOfWork.Abstract;
+using TransactionSubsystem.Infrastructure.UnitOfWork.Implementation;
+using System;
 
 namespace ParrotWings.App_Start
 {
     public static class UnityConfig
     {
-        private static UnityContainer _container;
+        private static Lazy<IUnityContainer> _container = new Lazy<IUnityContainer>(() =>
+        {
+            var container = new UnityContainer();
+            RegisterComponents(container);
+            return container;
+        });
+
         private static TransactionSubsystemContext _context;
 
-        public static UnityContainer GetConfiguredContainer()
+        public static IUnityContainer GetConfiguredContainer()
         {
-            return _container ?? (_container = new UnityContainer());
+            return _container.Value;
         }
 
         public static TransactionSubsystemContext GetContext()
@@ -23,32 +33,33 @@ namespace ParrotWings.App_Start
             return _context ?? (_context = new TransactionSubsystemContext());
         }
 
-        public static void RegisterComponents()
-        {     
-            // Repositories
-            _container.RegisterType<IUserRepository, UserRepository>(
-                new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(_context));
-            _container.RegisterType<ITransactionRepository, TransactionRepository>(
-                new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(_context));
-            _container.RegisterType<ISecurityService, SecurityService>();
+        public static void RegisterComponents(IUnityContainer container)
+        {
+            // Context, UoW factory
+            container.RegisterType<DbContext, TransactionSubsystemContext>(
+                new PerRequestLifetimeManager());
+            var context = container.Resolve<DbContext>();
+            container.RegisterType<IUnitOfWorkFactory, UnitOfWorkFactory>(
+                new PerRequestLifetimeManager(),
+                new InjectionConstructor(context));
 
-            var userRepository = _container.Resolve<IUserRepository>();
-            var transactionRepository = _container.Resolve<ITransactionRepository>();
+            // Repositories
+            container.RegisterType<IUserRepository, UserRepository>(
+                new PerRequestLifetimeManager(),
+                new InjectionConstructor(context));
+            var userRepository = container.Resolve<IUserRepository>();
 
             // Services
-            var securityService = _container.Resolve<ISecurityService>();
+            container.RegisterType<ISecurityService, SecurityService>(new PerRequestLifetimeManager());
+            var securityService = container.Resolve<ISecurityService>();
 
-            _container.RegisterType<IAuthenticationService, AuthenticationService>(
-                new ContainerControlledLifetimeManager(),
+            container.RegisterType<IAuthenticationService, AuthenticationService>(
+                new PerRequestLifetimeManager(),
                 new InjectionConstructor(userRepository, securityService));
-            _container.RegisterType<ITransactionService, TransactionService>(
-                new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(userRepository, transactionRepository));
-            _container.RegisterType<IUserProvider, UserProvider>(
-                new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(userRepository, securityService));            
+
+            container.RegisterType<IUserProvider, UserProvider>(
+                new PerRequestLifetimeManager(),
+                new InjectionConstructor(userRepository, securityService));
         }
     }
 }
