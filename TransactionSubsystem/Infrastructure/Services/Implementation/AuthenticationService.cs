@@ -49,7 +49,7 @@ namespace TransactionSubsystem.Services.Implementation
             _currentUser = _userRepository.GetSingle(x => x.Email == email);
             if (_currentUser != null && isPasswordValid(_currentUser, password))
             {
-                _currentUser.PrepareNewTransaction();
+                //_currentUser.PrepareNewTransaction();
                 loginResult = true;
             }
 

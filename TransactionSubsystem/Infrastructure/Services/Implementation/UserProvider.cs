@@ -50,14 +50,8 @@ namespace TransactionSubsystem.Services.Implementation
 
             var passwordSalt = _securityService.CreateSalt();
 
-            var user = new User()
-            {
-                Name = userName,
-                CurrentBalance = 500,
-                Salt = passwordSalt,
-                Email = email,
-                HashedPassword = _securityService.EncryptPassword(password, passwordSalt)
-            };
+            var user = new User(userName, email);
+            user.FillSecurityProperties(passwordSalt, _securityService.EncryptPassword(password, passwordSalt));
 
             _userRepository.Add(user);
             _userRepository.Commit();

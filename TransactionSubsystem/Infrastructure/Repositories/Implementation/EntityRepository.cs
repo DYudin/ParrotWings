@@ -77,6 +77,5 @@ namespace TransactionSubsystem.Repositories.Implementation
         {
             _context.SaveChanges();
         }
-
     }
 }
