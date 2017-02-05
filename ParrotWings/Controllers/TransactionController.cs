@@ -7,6 +7,7 @@ using ParrotWings.ViewModel;
 using TransactionSubsystem.Entities;
 using System.Threading.Tasks;
 using AutoMapper;
+using TransactionSubsystem.Infrastructure.UnitOfWork.Abstract;
 
 namespace ParrotWings.Controllers
 {
@@ -16,19 +17,20 @@ namespace ParrotWings.Controllers
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserProvider _userProvider;     
         private readonly ITransactionService _transactionService;
+        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
 
-        public TransactionController(
+        public TransactionController( 
             IAuthenticationService authenticationService,
             IUserProvider userProvider,            
-            ITransactionService transactionService)
+            IUnitOfWorkFactory unitOfWorkFactory)
         {
             if (authenticationService == null) throw new ArgumentNullException(("authenticationService"));
             if (userProvider == null) throw new ArgumentNullException(("userProvider"));           
-            if (transactionService == null) throw new ArgumentNullException(("transactionService"));
+            if (unitOfWorkFactory == null) throw new ArgumentNullException(("unitOfWorkFactory"));
 
             _authenticationService = authenticationService;
             _userProvider = userProvider;          
-            _transactionService = transactionService;
+            _unitOfWorkFactory = unitOfWorkFactory;
         }
 
         [Route("api/transaction/currentuserinfo")]
@@ -46,12 +48,15 @@ namespace ParrotWings.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetTransactions()
         {
-            List<TransactionViewModel> transactionsVM;            
+            List<TransactionViewModel> transactionsVM;
 
             try
             {
-                var transactions = await _transactionService.GetTransactionsByUserName(_authenticationService.CurrentUser.Name); //todo //unitOfWork.Drinks.GetAll()
-                var transactionsList = transactions.ToList();
+                List<Transaction> transactionsList = null;
+                await Task.Run(() =>
+                {
+                    transactionsList = _authenticationService.CurrentUser.Transactions.ToList();
+                });
 
                 Mapper.Initialize(cfg => cfg.CreateMap<Transaction, TransactionViewModel>()
                 .ForMember(
@@ -70,10 +75,10 @@ namespace ParrotWings.Controllers
                     dest => dest.Outgoing, 
                     opt => opt.MapFrom(
                         src => src.Recepient.Name != _authenticationService.CurrentUser.Name)));
+
                 transactionsVM = Mapper.Map<IEnumerable<Transaction>, List<TransactionViewModel>>(transactionsList); 
-             
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //TODO: logging
                 return BadRequest("Error getting transactions");
@@ -107,52 +112,43 @@ namespace ParrotWings.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> CommitTransaction(TransactionViewModel transactionVM)
         {
-            Result commitTransactionResult = null;
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var transactionOwner = _userProvider.GetUserByName(_authenticationService.CurrentUser.Name); //todo unitOfWork.Drinks.GetAll() // todo await
-                    var recepient = _userProvider.GetUserByName(transactionVM.CorrespondedUser); //todo unitOfWork.Drinks.GetAll()// todo await
+                    using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
+                    {
+                        User recepient = null;
+                        await Task.Run(() =>
+                            {
+                                recepient = _userProvider.GetUserByName(transactionVM.CorrespondedUser);
+                            });
 
-                    if (recepient == null)
-                    {
-                        commitTransactionResult = new Result()
+                        if (recepient == null)
                         {
-                            Succeeded = false,
-                            Message = $"User with name: '{transactionVM.CorrespondedUser}' not found"
-                        };
-                    }
-                    else
-                    {
+                            return BadRequest($"User with name: '{transactionVM.CorrespondedUser}' not found");
+                        }
+
                         Mapper.Initialize(cfg => cfg.CreateMap<TransactionViewModel, Transaction>()
-                        .ForMember(
-                            dest => dest.Recepient,
-                            opt => opt.MapFrom(
-                                src => recepient))
-                        .ForMember(
-                            dest => dest.TransactionOwner,
-                            opt => opt.MapFrom(
-                                src => transactionOwner)));
+                            .ForMember(
+                                dest => dest.Recepient,
+                                opt => opt.MapFrom(
+                                    src => recepient)));
                         var transaction = Mapper.Map<TransactionViewModel, Transaction>(transactionVM);
+       
+                        await Task.Run(() => _authenticationService.CurrentUser.ExecuteTransaction(transaction)); //_transactionService.CommitTransaction(transaction);
 
-                        await _transactionService.CommitTransaction(transaction);
-
-                        commitTransactionResult = new Result()
-                        {
-                            Succeeded = true,
-                            Message = "Transaction succeeded"
-                        };
-                    }
+                        unitOfWork.Commit();
+                    }                  
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    // todo log
                     return BadRequest("Transaction failed");
                 }
             }
 
-            return Ok(commitTransactionResult);
+            return Ok();
         }
     }
 }

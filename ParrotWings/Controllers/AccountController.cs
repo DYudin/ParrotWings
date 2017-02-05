@@ -5,114 +5,83 @@ using Interfaces;
 using ParrotWings.ViewModel;
 using TransactionSubsystem.Repositories.Abstract;
 
-[Route("api/[controller]")]
-public class AccountController : ApiController
+namespace ParrotWings.Controllers
 {
-    private readonly IAuthenticationService _authenticationService;
-    private readonly IUserRepository _userRepository;
-    private readonly IUserProvider _userProvider;
-
-    public AccountController(IAuthenticationService authenticationService,
-                             IUserRepository userRepository,
-                             IUserProvider userProvider)
+    [Route("api/[controller]")]
+    public class AccountController : ApiController
     {
-        if (authenticationService == null) throw new ArgumentNullException(("authenticationService"));
-        if (userRepository == null) throw new ArgumentNullException(("userRepository"));
-        if (userProvider == null) throw new ArgumentNullException(("userProvider"));
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IUserProvider _userProvider;
 
-        _authenticationService = authenticationService;
-        _userRepository = userRepository;
-        _userProvider = userProvider;
-    }
+        public AccountController(IAuthenticationService authenticationService,
+            IUserRepository userRepository,
+            IUserProvider userProvider)
+        {
+            if (authenticationService == null) throw new ArgumentNullException(("authenticationService"));
+            if (userProvider == null) throw new ArgumentNullException(("userProvider"));
+
+            _authenticationService = authenticationService;
+            _userProvider = userProvider;
+        }
     
-    // POST: /account/register
-    [Route("api/account/register")]
-    [HttpPost]
-    public async Task<IHttpActionResult> Register([FromBody] RegistrationViewModel user)
-    {
-        Result registerResult = null;
-
-        try
+        // POST: /account/register
+        [Route("api/account/register")]
+        [HttpPost]
+        public async Task<IHttpActionResult> Register([FromBody] RegistrationViewModel user)
         {
-            var _user = await _userProvider.CreateUser(user.Username, user.Email, user.Password);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var _user = await _userProvider.CreateUser(user.Username, user.Email, user.Password);
 
-            if (_user != null)
-            {
-                registerResult = new Result()
+                    if (_user == null)
+                    {
+                        return BadRequest("Failed register user");
+                    }
+                }
+                catch (Exception ex)
                 {
-                    Succeeded = true,
-                    Message = "Register succeeded"
-                };
+                    // todo logging
+                    return BadRequest("Failed register user");
+                }
             }
-            else
-            {
-                registerResult = new Result()
-                {
-                    Succeeded = true,
-                    Message = "Register failed"
-                };
-            }
-        }
-        catch (Exception ex)
-        {
-            registerResult = new Result()
-            {
-                Succeeded = false,
-                Message = ex.Message
-            };
+
+            return Ok();
         }
 
-        return Ok(registerResult); ;
-    }
 
-
-    [Route("api/account/login")]
-    [HttpPost]
-    public async Task<IHttpActionResult> Login(LoginViewModel model) //, string returnUrl
-    {
-        Result loginResult = null;
-
-        try
+        [Route("api/account/login")]
+        [HttpPost]
+        public async Task<IHttpActionResult> Login(LoginViewModel credentials) //, string returnUrl
         {
-            var authResult = await _authenticationService.Login(model.Email, model.Password);
-
-            if (authResult)
+            if (ModelState.IsValid)
             {
-                loginResult = new Result()
+                try
                 {
-                    Succeeded = true,
-                    Message = "Authentication succeeded"
-                };
+                    var authResult = await _authenticationService.Login(credentials.Email, credentials.Password);
 
-                //return Ok(loginResult);
-            }
-            else
-            {
-                loginResult = new Result()
+                    if (!authResult)
+                    {
+                        return BadRequest("Failed login");
+                    }
+                }
+                catch (Exception ex)
                 {
-                    Succeeded = false,
-                    Message = "Authentication failed"
-                };                
+                    // TODO: logging
+                    return BadRequest("Failed login");
+                }
             }
-        }
-        catch (Exception ex)
-        {
-            loginResult = new Result()
-            {
-                Succeeded = false,
-                Message = ex.Message
-            };
+
+            return Ok();
         }
 
-        return Ok(loginResult);
-    }
-
-    [Route("api/account/logout")]
-    [HttpPost]
-    public IHttpActionResult Logout()
-    {
-        _authenticationService.CurrentUser = null;
-        return Ok();
-        
+        [Route("api/account/logout")]
+        [HttpPost]
+        public IHttpActionResult Logout()
+        {
+            _authenticationService.CurrentUser = null;
+            return Ok();
+        }
     }
 }
