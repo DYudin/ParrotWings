@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Interfaces;
 using TransactionSubsystem.Entities;
-using TransactionSubsystem.Repositories.Abstract;
 using System.Threading.Tasks;
+using TransactionSubsystem.Infrastructure.Repositories.Abstract;
+using TransactionSubsystem.Infrastructure.Services.Abstract;
 
-namespace TransactionSubsystem.Services.Implementation
+namespace TransactionSubsystem.Infrastructure.Services.Implementation
 {
     public class TransactionService : ITransactionService //, IDisposable
     {

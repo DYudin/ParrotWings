@@ -50,10 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiMock.cs" />
-    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Entities\Transaction.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Infrastructure\Exceptions\TransactionSubsystemException.cs" />
+    <Compile Include="Infrastructure\UnitOfWork\Abstract\IUnitOfWork.cs" />
+    <Compile Include="Infrastructure\UnitOfWork\Abstract\IUnitOfWorkFactory.cs" />
+    <Compile Include="Infrastructure\UnitOfWork\Implementation\UnitOfWorkFactory.cs" />
     <Compile Include="Migrations\201612031211009_InitialCreate.cs" />
     <Compile Include="Migrations\201612031211009_InitialCreate.Designer.cs">
       <DependentUpon>201612031211009_InitialCreate.cs</DependentUpon>
@@ -72,18 +74,18 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\Abstract\IEntityRepository.cs" />
-    <Compile Include="Repositories\Abstract\RepositoryInterfaces.cs" />
-    <Compile Include="Repositories\Implementation\EntityRepository.cs" />
-    <Compile Include="Repositories\Implementation\TransactionRepository.cs" />
-    <Compile Include="Repositories\Implementation\UserRepository.cs" />
-    <Compile Include="Services\Abstract\Interfaces.cs" />
-    <Compile Include="Services\Implementation\AuthenticationService.cs" />
-    <Compile Include="Services\Implementation\SecurityService.cs" />
-    <Compile Include="Services\Implementation\TransactionService.cs" />
-    <Compile Include="Services\Implementation\UserProvider.cs" />
-    <Compile Include="Services\Mock\AuthMock.cs" />
-    <Compile Include="Repositories\TransactionSubsystemContext.cs" />
+    <Compile Include="Infrastructure\Repositories\Abstract\IEntityRepository.cs" />
+    <Compile Include="Infrastructure\Repositories\Abstract\RepositoryInterfaces.cs" />
+    <Compile Include="Infrastructure\Repositories\Implementation\EntityRepository.cs" />
+    <Compile Include="Infrastructure\Repositories\Implementation\TransactionRepository.cs" />
+    <Compile Include="Infrastructure\Repositories\Implementation\UserRepository.cs" />
+    <Compile Include="Infrastructure\Services\Abstract\Interfaces.cs" />
+    <Compile Include="Infrastructure\Services\Implementation\AuthenticationService.cs" />
+    <Compile Include="Infrastructure\Services\Implementation\SecurityService.cs" />
+    <Compile Include="Infrastructure\Services\Implementation\TransactionService.cs" />
+    <Compile Include="Infrastructure\UnitOfWork\Implementation\UnitOfWork.cs" />
+    <Compile Include="Infrastructure\Services\Implementation\UserProvider.cs" />
+    <Compile Include="Infrastructure\Repositories\TransactionSubsystemContext.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

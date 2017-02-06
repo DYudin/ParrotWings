@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
+using TransactionSubsystem.Infrastructure.Repositories.Abstract;
 using TransactionSubsystem.Infrastructure.UnitOfWork.Abstract;
-using TransactionSubsystem.Repositories;
-using TransactionSubsystem.Repositories.Abstract;
 
 namespace TransactionSubsystem.Infrastructure.UnitOfWork.Implementation
 {

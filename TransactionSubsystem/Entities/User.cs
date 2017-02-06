@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using TransactionSubsystem.Infrastructure.Exceptions;
 
 namespace TransactionSubsystem.Entities
 {
@@ -44,13 +45,13 @@ namespace TransactionSubsystem.Entities
         {
             //todo
             if (transaction == null) throw new ArgumentNullException("Transaction");
-            if (transaction.Amount <= 0) throw new ArgumentException("Transaction amount must be greater than 0");
+            if (transaction.Amount <= 0) throw new TransactionSubsystemException("Transaction amount must be greater than 0");
            
             // todo
             transaction.TransactionOwner = this;
 
-            if (transaction.TransactionOwner.Name == transaction.Recepient.Name) throw new ArgumentException("Recipient must be different from the transaction sender");
-            if (transaction.Amount > transaction.TransactionOwner.CurrentBalance) throw new ArgumentException("Not enough money");
+            if (transaction.TransactionOwner.Name == transaction.Recepient.Name) throw new TransactionSubsystemException("Recipient must be different from the transaction sender");
+            if (transaction.Amount > transaction.TransactionOwner.CurrentBalance) throw new TransactionSubsystemException("Not enough money");
 
             transaction.TransactionOwner.CurrentBalance -= transaction.Amount;
             transaction.Recepient.CurrentBalance += transaction.Amount;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace TransactionSubsystem.Repositories.Abstract
+namespace TransactionSubsystem.Infrastructure.Repositories.Abstract 
 {
     public interface IEntityRepository<T> where T : class, new()
     {

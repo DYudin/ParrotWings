@@ -15,6 +15,7 @@ namespace ParrotWings
             // Web API routes
             config.MapHttpAttributeRoutes();
             config.Filters.Add(new ValidateModelAttribute());
+            config.Filters.Add(new CustomExceptionAttribute());
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

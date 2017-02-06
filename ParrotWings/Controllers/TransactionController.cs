@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
-using Interfaces;
 using ParrotWings.ViewModel;
 using TransactionSubsystem.Entities;
 using System.Threading.Tasks;
 using AutoMapper;
+using TransactionSubsystem.Infrastructure.Services.Abstract;
 using TransactionSubsystem.Infrastructure.UnitOfWork.Abstract;
 
 namespace ParrotWings.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class TransactionController : ApiController
     {
@@ -50,39 +51,31 @@ namespace ParrotWings.Controllers
         {
             List<TransactionViewModel> transactionsVM;
 
-            try
+            List<Transaction> transactionsList = null;
+            await Task.Run(() =>
             {
-                List<Transaction> transactionsList = null;
-                await Task.Run(() =>
-                {
-                    transactionsList = _authenticationService.CurrentUser.Transactions.ToList();
-                });
+                transactionsList = _authenticationService.CurrentUser.Transactions.ToList();
+            });
 
-                Mapper.Initialize(cfg => cfg.CreateMap<Transaction, TransactionViewModel>()
+            Mapper.Initialize(cfg => cfg.CreateMap<Transaction, TransactionViewModel>()
                 .ForMember(
-                    dest => dest.CorrespondedUser, 
-                    opt => opt.MapFrom(
-                        src => src.Recepient.Name == _authenticationService.CurrentUser.Name ?
-                        src.TransactionOwner.Name :
-                        src.Recepient.Name))
-                .ForMember(
-                    dest => dest.ResultingBalance, 
+                    dest => dest.CorrespondedUser,
                     opt => opt.MapFrom(
                         src => src.Recepient.Name == _authenticationService.CurrentUser.Name
-                        ? src.RecepientResultingBalance
-                        : src.OwnerResultingBalance))
+                            ? src.TransactionOwner.Name
+                            : src.Recepient.Name))
                 .ForMember(
-                    dest => dest.Outgoing, 
+                    dest => dest.ResultingBalance,
+                    opt => opt.MapFrom(
+                        src => src.Recepient.Name == _authenticationService.CurrentUser.Name
+                            ? src.RecepientResultingBalance
+                            : src.OwnerResultingBalance))
+                .ForMember(
+                    dest => dest.Outgoing,
                     opt => opt.MapFrom(
                         src => src.Recepient.Name != _authenticationService.CurrentUser.Name)));
 
-                transactionsVM = Mapper.Map<IEnumerable<Transaction>, List<TransactionViewModel>>(transactionsList); 
-            }
-            catch (Exception ex)
-            {
-                //TODO: logging
-                return BadRequest("Error getting transactions");
-            }
+            transactionsVM = Mapper.Map<IEnumerable<Transaction>, List<TransactionViewModel>>(transactionsList);
 
             return Ok(transactionsVM);
         }
@@ -92,21 +85,13 @@ namespace ParrotWings.Controllers
         public async Task<IHttpActionResult> GetUsers()
         {
             List<UserViewModel> usersVM;
-           
-            try
-            {
-                var users = await _userProvider.GetUsers();
-                Mapper.Initialize(cfg => cfg.CreateMap<User, UserViewModel>());
-                usersVM = Mapper.Map<IEnumerable<User>, List<UserViewModel>>(users); //todo unitOfWork.Drinks.GetAll()
-            }
-            catch (Exception)
-            {
-                //TODO: logging
-                return BadRequest("Error getting users");
-            }
 
+            var users = await _userProvider.GetUsers();
+            Mapper.Initialize(cfg => cfg.CreateMap<User, UserViewModel>());
+            usersVM = Mapper.Map<IEnumerable<User>, List<UserViewModel>>(users); //todo unitOfWork.Drinks.GetAll()
+            
             return Ok(usersVM);
-        } 
+        }
 
         [Route("api/transaction/sendmoney")]
         [HttpPost]
@@ -114,37 +99,29 @@ namespace ParrotWings.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
+                using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
                 {
-                    using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
+                    User recepient = null;
+                    await Task.Run(() =>
                     {
-                        User recepient = null;
-                        await Task.Run(() =>
-                            {
-                                recepient = _userProvider.GetUserByName(transactionVM.CorrespondedUser);
-                            });
+                        recepient = _userProvider.GetUserByName(transactionVM.CorrespondedUser);
+                    });
 
-                        if (recepient == null)
-                        {
-                            return BadRequest($"User with name: '{transactionVM.CorrespondedUser}' not found");
-                        }
+                    if (recepient == null)
+                    {
+                        return BadRequest($"User with name: '{transactionVM.CorrespondedUser}' not found");
+                    }
 
-                        Mapper.Initialize(cfg => cfg.CreateMap<TransactionViewModel, Transaction>()
-                            .ForMember(
-                                dest => dest.Recepient,
-                                opt => opt.MapFrom(
-                                    src => recepient)));
-                        var transaction = Mapper.Map<TransactionViewModel, Transaction>(transactionVM);
-       
-                        await Task.Run(() => _authenticationService.CurrentUser.ExecuteTransaction(transaction)); //_transactionService.CommitTransaction(transaction);
+                    Mapper.Initialize(cfg => cfg.CreateMap<TransactionViewModel, Transaction>()
+                        .ForMember(
+                            dest => dest.Recepient,
+                            opt => opt.MapFrom(
+                                src => recepient)));
+                    var transaction = Mapper.Map<TransactionViewModel, Transaction>(transactionVM);
 
-                        unitOfWork.Commit();
-                    }                  
-                }
-                catch (Exception ex)
-                {
-                    // todo log
-                    return BadRequest("Transaction failed");
+                    await Task.Run(() => _authenticationService.CurrentUser.ExecuteTransaction(transaction));
+
+                    unitOfWork.Commit();
                 }
             }
 

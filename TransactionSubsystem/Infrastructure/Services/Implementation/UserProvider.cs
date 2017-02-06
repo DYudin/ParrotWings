@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Interfaces;
 using TransactionSubsystem.Entities;
-using TransactionSubsystem.Repositories.Abstract;
 using System.Collections.Generic;
+using TransactionSubsystem.Infrastructure.Exceptions;
+using TransactionSubsystem.Infrastructure.Repositories.Abstract;
+using TransactionSubsystem.Infrastructure.Services.Abstract;
 
-namespace TransactionSubsystem.Services.Implementation
+namespace TransactionSubsystem.Infrastructure.Services.Implementation
 {
     public class UserProvider : IUserProvider
     {
@@ -45,7 +46,7 @@ namespace TransactionSubsystem.Services.Implementation
 
             if (existingUser != null)
             {
-                throw new Exception(string.Format("User with {0} email is already registered", email));
+                throw new TransactionSubsystemException($"User with {email} email is already registered");
             }
 
             var passwordSalt = _securityService.CreateSalt();

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
-using Interfaces;
+using TransactionSubsystem.Infrastructure.Services.Abstract;
 
-namespace TransactionSubsystem.Services.Implementation
+namespace TransactionSubsystem.Infrastructure.Services.Implementation
 {
     public class SecurityService : ISecurityService
     {

@@ -1,10 +1,9 @@
 ﻿
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TransactionSubsystem.Entities;
 
-namespace Interfaces
+namespace TransactionSubsystem.Infrastructure.Services.Abstract
 {
     public interface IAuthenticationService
     {

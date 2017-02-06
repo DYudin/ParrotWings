@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Interfaces;
 using ParrotWings.ViewModel;
-using TransactionSubsystem.Repositories.Abstract;
+using TransactionSubsystem.Infrastructure.Repositories.Abstract;
+using TransactionSubsystem.Infrastructure.Services.Abstract;
 
 namespace ParrotWings.Controllers
 {
@@ -31,18 +31,10 @@ namespace ParrotWings.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    var _user = await _userProvider.CreateUser(user.Username, user.Email, user.Password);
+                var _user = await _userProvider.CreateUser(user.Username, user.Email, user.Password);
 
-                    if (_user == null)
-                    {
-                        return BadRequest("Failed register user");
-                    }
-                }
-                catch (Exception ex)
+                if (_user == null)
                 {
-                    // todo logging
                     return BadRequest("Failed register user");
                 }
             }
@@ -50,32 +42,23 @@ namespace ParrotWings.Controllers
             return Ok();
         }
 
-
         [Route("api/account/login")]
         [HttpPost]
         public async Task<IHttpActionResult> Login(LoginViewModel credentials) //, string returnUrl
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    var authResult = await _authenticationService.Login(credentials.Email, credentials.Password);
+                var authResult = await _authenticationService.Login(credentials.Email, credentials.Password);
 
-                    if (!authResult)
-                    {
-                        return BadRequest("Failed login");
-                    }
-                }
-                catch (Exception ex)
+                if (!authResult)
                 {
-                    // TODO: logging
                     return BadRequest("Failed login");
                 }
             }
 
             return Ok();
         }
-
+      
         [Route("api/account/logout")]
         [HttpPost]
         public IHttpActionResult Logout()

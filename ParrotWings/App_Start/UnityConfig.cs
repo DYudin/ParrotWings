@@ -1,14 +1,13 @@
-﻿
+﻿using System;
 using Microsoft.Practices.Unity;
-using Interfaces;
 using TransactionSubsystem.Repositories;
-using TransactionSubsystem.Repositories.Abstract;
-using TransactionSubsystem.Repositories.Implementation;
-using TransactionSubsystem.Services.Implementation;
 using System.Data.Entity;
 using TransactionSubsystem.Infrastructure.UnitOfWork.Abstract;
 using TransactionSubsystem.Infrastructure.UnitOfWork.Implementation;
-using System;
+using TransactionSubsystem.Infrastructure.Repositories.Abstract;
+using TransactionSubsystem.Infrastructure.Services.Abstract;
+using TransactionSubsystem.Infrastructure.Repositories.Implementation;
+using TransactionSubsystem.Infrastructure.Services.Implementation;
 
 namespace ParrotWings.App_Start
 {

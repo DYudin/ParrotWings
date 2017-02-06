@@ -131,6 +131,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\WarmupController.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
+    <Compile Include="Filters\CustomExceptionAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

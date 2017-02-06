@@ -1,7 +1,8 @@
 ﻿
 using TransactionSubsystem.Entities;
 
-namespace TransactionSubsystem.Repositories.Abstract
+namespace TransactionSubsystem.Infrastructure.Repositories.Abstract
+
 {
     public interface IUserRepository : IEntityRepository<User> { }
       

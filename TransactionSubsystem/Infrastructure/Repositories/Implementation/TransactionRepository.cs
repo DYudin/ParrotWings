@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using TransactionSubsystem.Entities;
-using TransactionSubsystem.Repositories.Abstract;
+using TransactionSubsystem.Infrastructure.Repositories.Abstract;
+using TransactionSubsystem.Repositories;
 
-namespace TransactionSubsystem.Repositories.Implementation
+namespace TransactionSubsystem.Infrastructure.Repositories.Implementation
 {
     public class TransactionRepository : EntityRepository<Transaction>, ITransactionRepository
     {

@@ -4,11 +4,11 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
-using TransactionSubsystem.Repositories.Abstract;
+using TransactionSubsystem.Infrastructure.Repositories.Abstract;
+using TransactionSubsystem.Repositories;
 
-namespace TransactionSubsystem.Repositories.Implementation
+namespace TransactionSubsystem.Infrastructure.Repositories.Implementation
 {
     public class EntityRepository<T> : IEntityRepository<T> where T : class, new()
     {
