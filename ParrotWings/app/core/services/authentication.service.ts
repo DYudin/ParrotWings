@@ -18,12 +18,12 @@ export class AuthenticationService {
 
         this.accountService.set(this._accountRegisterAPI);
 
-        return this.accountService.post(JSON.stringify(newUser));
+        return this.accountService.post(JSON.stringify(newUser), false);
     }
 
     login(creds: Credentials) {
         this.accountService.set(this._accountLoginAPI);
-        return this.accountService.post(JSON.stringify(creds));
+        return this.accountService.post(JSON.stringify(creds), false);
     }
 
     logout() {

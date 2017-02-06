@@ -21,24 +21,13 @@ export class LoginComponent implements OnInit {
     }
 
     login(): void {
-        var _authenticationResult: OperationResult = new OperationResult(false, '');
-
         this.authService.login(this._credentials)
-            .subscribe(res => {
-                _authenticationResult.Succeeded = res.Succeeded;
-                _authenticationResult.Message = res.Message;
-            },
-            error => console.error('Error: ' + error),
+            .subscribe(
             () => {
-                if (_authenticationResult.Succeeded) {
-                    alert(_authenticationResult.Message);                              
-                    this._currentUser = new User(this._credentials.Email);
-                    localStorage.setItem('user', JSON.stringify(this._currentUser));
-                    this.router.navigate(['home']);
-                }
-                else {
-                    alert(_authenticationResult.Message);                  
-                }
-            });
+                this._currentUser = new User(this._credentials.Email);
+                localStorage.setItem('user', JSON.stringify(this._currentUser));
+                this.router.navigate(['home']);
+            },
+            error => alert(error.json().Message));
     };
 }

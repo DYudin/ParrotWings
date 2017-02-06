@@ -24,7 +24,6 @@ namespace ParrotWings.Controllers
             _userProvider = userProvider;
         }
     
-        // POST: /account/register
         [Route("api/account/register")]
         [HttpPost]
         public async Task<IHttpActionResult> Register([FromBody] RegistrationViewModel user)
@@ -47,7 +46,7 @@ namespace ParrotWings.Controllers
 
             if (!authResult)
             {
-                return BadRequest("Failed login");
+                return BadRequest("Invalid credentials");
             }
             
             return Ok();

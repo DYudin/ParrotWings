@@ -39,22 +39,12 @@ export class RegisterComponent implements OnInit {
     }
 
     register(): void {
-        var _registrationResult: OperationResult = new OperationResult(false, '');
         this.authService.register(this._newUser)
-            .subscribe(res => {
-                _registrationResult.Succeeded = res.Succeeded;
-                _registrationResult.Message = res.Message;
-
-            },
-            error => console.error('Error: ' + error),
+            .subscribe(
             () => {
-                if (_registrationResult.Succeeded) {
-                    alert(_registrationResult.Message);                  
-                    this.router.navigate(['account/login']);
-                }
-                else {
-                    alert(_registrationResult.Message);                   
-                }
-            });
-    };
+                alert("Registration succeeded");
+                this.router.navigate(['account/login']);
+            },
+                error => alert(error.json().Message));
+    }
 }

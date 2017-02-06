@@ -30,7 +30,7 @@ export class TransactionComponent implements OnInit {
     }
 
     ngOnInit() {
-        let _isUserAuthenticated = this.authService.isUserAuthenticated();
+        //let _isUserAuthenticated = this.authService.isUserAuthenticated();
         this._currentUser = new User('');
         this.getCurrentUserInfo();
         this.getUsers();        
@@ -39,7 +39,7 @@ export class TransactionComponent implements OnInit {
     }
 
     onUserModified(value) { 
-        if (value == this._currentUser.UserName) {
+        if (value === this._currentUser.UserName) {
             this._transaction.CorrespondedUserValid = false;
         }
         else {
@@ -68,7 +68,7 @@ export class TransactionComponent implements OnInit {
                 var data: any = res.json();
                 this._currentUser = data;
             },
-            error => console.error('Error: ' + error));
+            error => alert(error.json().Message));
     }
     
     getTransactions(): void {
@@ -78,13 +78,13 @@ export class TransactionComponent implements OnInit {
             .subscribe(res => {
                 var data: any = res.json();               
                 self._transactions = data;
-                self._transactions.sort(function (a, b) {
+                self._transactions.sort((a, b) => {
                     var dateA = new Date(a.Date).getTime();
                     var dateB = new Date(b.Date).getTime();
                     return dateA < dateB ? 1 : -1;  
                 });
                 },
-                error => console.error('Error: ' + error));
+            error => alert(error.json().Message));
     }
 
     getUsers(): void {
@@ -99,32 +99,21 @@ export class TransactionComponent implements OnInit {
                     }
                 }
             },
-            error => console.error('Error: ' + error));
+            error => alert(error.json().Message));
     }   
 
     send(): void {       
         this.transactionService.set(this._sendMoneyAPI);        
-        var _sendResult: OperationResult = new OperationResult(false, '');
         this._transaction.Date = new Date();
 
         // send transaction
         this.transactionService.post(this._transaction)
-            .subscribe(res => {
-                _sendResult.Succeeded = res.Succeeded;
-                _sendResult.Message = res.Message;
-            },
-            error => console.error('Error: ' + error),
+            .subscribe(
             () => {
-                if (_sendResult.Succeeded) {
-                    alert(_sendResult.Message);
-
-                    //refresh ui
-                    this.getCurrentUserInfo();
-                    this.getTransactions();
-                }
-                else {
-                    alert(_sendResult.Message);                   
-                }
-            });      
+                //refresh ui
+                this.getCurrentUserInfo();
+                this.getTransactions();
+            },
+            error => alert(error.json().Message));
     };
 }
