@@ -97,32 +97,29 @@ namespace ParrotWings.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> CommitTransaction(TransactionViewModel transactionVM)
         {
-            if (ModelState.IsValid)
+            using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
             {
-                using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
+                User recepient = null;
+                await Task.Run(() =>
                 {
-                    User recepient = null;
-                    await Task.Run(() =>
-                    {
-                        recepient = _userProvider.GetUserByName(transactionVM.CorrespondedUser);
-                    });
+                    recepient = _userProvider.GetUserByName(transactionVM.CorrespondedUser);
+                });
 
-                    if (recepient == null)
-                    {
-                        return BadRequest($"User with name: '{transactionVM.CorrespondedUser}' not found");
-                    }
-
-                    Mapper.Initialize(cfg => cfg.CreateMap<TransactionViewModel, Transaction>()
-                        .ForMember(
-                            dest => dest.Recepient,
-                            opt => opt.MapFrom(
-                                src => recepient)));
-                    var transaction = Mapper.Map<TransactionViewModel, Transaction>(transactionVM);
-
-                    await Task.Run(() => _authenticationService.CurrentUser.ExecuteTransaction(transaction));
-
-                    unitOfWork.Commit();
+                if (recepient == null)
+                {
+                    return BadRequest($"User with name: '{transactionVM.CorrespondedUser}' not found");
                 }
+
+                Mapper.Initialize(cfg => cfg.CreateMap<TransactionViewModel, Transaction>()
+                    .ForMember(
+                        dest => dest.Recepient,
+                        opt => opt.MapFrom(
+                            src => recepient)));
+                var transaction = Mapper.Map<TransactionViewModel, Transaction>(transactionVM);
+
+                await Task.Run(() => _authenticationService.CurrentUser.ExecuteTransaction(transaction));
+
+                unitOfWork.Commit();
             }
 
             return Ok();

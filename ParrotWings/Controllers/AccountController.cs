@@ -29,14 +29,11 @@ namespace ParrotWings.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> Register([FromBody] RegistrationViewModel user)
         {
-            if (ModelState.IsValid)
-            {
-                var _user = await _userProvider.CreateUser(user.Username, user.Email, user.Password);
+            var _user = await _userProvider.CreateUser(user.Username, user.Email, user.Password);
 
-                if (_user == null)
-                {
-                    return BadRequest("Failed register user");
-                }
+            if (_user == null)
+            {
+                return BadRequest("Failed register user");
             }
 
             return Ok();
@@ -46,19 +43,16 @@ namespace ParrotWings.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> Login(LoginViewModel credentials) //, string returnUrl
         {
-            if (ModelState.IsValid)
+            var authResult = await _authenticationService.Login(credentials.Email, credentials.Password);
+
+            if (!authResult)
             {
-                var authResult = await _authenticationService.Login(credentials.Email, credentials.Password);
-
-                if (!authResult)
-                {
-                    return BadRequest("Failed login");
-                }
+                return BadRequest("Failed login");
             }
-
+            
             return Ok();
         }
-      
+
         [Route("api/account/logout")]
         [HttpPost]
         public IHttpActionResult Logout()
