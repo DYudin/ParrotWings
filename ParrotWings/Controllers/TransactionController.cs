@@ -20,7 +20,6 @@ namespace ParrotWings.Controllers
     public class TransactionController : ApiController
     {
         private readonly IUserProvider _userProvider;     
-        private readonly ITransactionService _transactionService;
         private readonly IUnitOfWorkFactory _unitOfWorkFactory;
 
         public TransactionController( 

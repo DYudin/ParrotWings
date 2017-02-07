@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using TransactionSubsystem.Entities;
+﻿using TransactionSubsystem.Entities;
 using System;
 using System.Text;
 using TransactionSubsystem.Infrastructure.Exceptions;
@@ -21,19 +20,6 @@ namespace TransactionSubsystem.Infrastructure.Services.Implementation
             _userRepository = userRepository;
             _securityService = securityService;
         }
-
-        //public User CurrentUser
-        //{
-        //    get
-        //    {
-        //        return _currentUser;
-        //    }
-        //    set
-        //    {
-        //        _currentUser = value;
-        //    }
-
-        //}
 
         public string Login(string email, string password)
         {

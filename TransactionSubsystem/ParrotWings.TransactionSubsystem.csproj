@@ -82,7 +82,6 @@
     <Compile Include="Infrastructure\Services\Abstract\Interfaces.cs" />
     <Compile Include="Infrastructure\Services\Implementation\AuthenticationService.cs" />
     <Compile Include="Infrastructure\Services\Implementation\SecurityService.cs" />
-    <Compile Include="Infrastructure\Services\Implementation\TransactionService.cs" />
     <Compile Include="Infrastructure\UnitOfWork\Implementation\UnitOfWork.cs" />
     <Compile Include="Infrastructure\Services\Implementation\UserProvider.cs" />
     <Compile Include="Infrastructure\Repositories\TransactionSubsystemContext.cs" />
