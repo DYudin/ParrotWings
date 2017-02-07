@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
     @HostListener('window:unload', ['$event'])
     unloadHandler(event) {
         this.logout();
-        localStorage.removeItem('user')
+        localStorage.removeItem('user');
     }
 
     constructor(public authService: AuthenticationService,
@@ -74,18 +74,19 @@ export class AppComponent implements OnInit {
         return this.authService.isUserAuthenticated();
     }
 
-    getUserName(): string {
-        if (this.isUserLoggedIn()) {
-            var _user = this.authService.getLoggedInUser();
-            return _user.UserName;
-        }
-        else
-            return 'No user';
-    }
+    //getUserName(): string {
+    //    if (this.isUserLoggedIn()) {
+    //        var _user = this.authService.getLoggedInUser();
+    //        return _user.UserName;
+    //    }
+    //    else
+    //        return 'No user';
+    //}
 
     logout(): void {
         this.authService.logout()
-            .subscribe(res => {
+            .subscribe(
+            () => {
                 localStorage.removeItem('user');
             },
             error => console.error('Error: ' + error),

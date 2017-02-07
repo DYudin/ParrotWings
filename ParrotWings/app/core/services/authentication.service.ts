@@ -39,14 +39,25 @@ export class AuthenticationService {
             return false;
     }
 
-    getLoggedInUser(): User {
-        var _user: User;
+    getAuthValue(): string {
+        var _authValue: string;
 
         if (this.isUserAuthenticated()) {
-            var _userData = JSON.parse(localStorage.getItem('user'));
-            _user = new User(_userData.Username);
+            var _authValueData = JSON.parse(localStorage.getItem('user'));
+            _authValue = _authValueData.UserName;
         }
 
-        return _user;
+        return _authValue;
     }
+
+    //getLoggedInUser(): User {
+    //    var _user: User;
+
+    //    if (this.isUserAuthenticated()) {
+    //        var _userData = JSON.parse(localStorage.getItem('user'));
+    //        _user = new User(_userData.Username);
+    //    }
+
+    //    return _user;
+    //}
 }

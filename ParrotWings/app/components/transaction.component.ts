@@ -31,6 +31,8 @@ export class TransactionComponent implements OnInit {
 
     ngOnInit() {
         //let _isUserAuthenticated = this.authService.isUserAuthenticated();
+        let authValue = this.authService.getAuthValue();
+        this.transactionService.setAuthHeaderValue(authValue);
         this._currentUser = new User('');
         this.getCurrentUserInfo();
         this.getUsers();        

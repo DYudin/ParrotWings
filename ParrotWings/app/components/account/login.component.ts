@@ -23,8 +23,8 @@ export class LoginComponent implements OnInit {
     login(): void {
         this.authService.login(this._credentials)
             .subscribe(
-            () => {
-                this._currentUser = new User(this._credentials.Email);
+            (res) => {
+                this._currentUser = new User(res.json());
                 localStorage.setItem('user', JSON.stringify(this._currentUser));
                 this.router.navigate(['home']);
             },
