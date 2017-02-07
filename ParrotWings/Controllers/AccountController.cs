@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using ParrotWings.ViewModel;
@@ -28,7 +29,7 @@ namespace ParrotWings.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> Register([FromBody] RegistrationViewModel user)
         {
-            var _user = await _userProvider.CreateUser(user.Username, user.Email, user.Password);
+            var _user = await Task.Run(() => _userProvider.CreateUser(user.Username, user.Email, user.Password));
 
             if (_user == null)
             {
@@ -40,23 +41,17 @@ namespace ParrotWings.Controllers
 
         [Route("api/account/login")]
         [HttpPost]
-        public async Task<IHttpActionResult> Login(LoginViewModel credentials) //, string returnUrl
+        public async Task<IHttpActionResult> Login(LoginViewModel credentials)
         {
-            var authResult = await _authenticationService.Login(credentials.Email, credentials.Password);
-
-            if (!authResult)
-            {
-                return BadRequest("Invalid credentials");
-            }
-            
-            return Ok();
+            var authResult = await Task.Run(() => _authenticationService.Login(credentials.Email, credentials.Password));
+            return Ok(authResult);
         }
 
         [Route("api/account/logout")]
         [HttpPost]
         public IHttpActionResult Logout()
         {
-            _authenticationService.CurrentUser = null;
+            _authenticationService.LogOut();
             return Ok();
         }
     }
