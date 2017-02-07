@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using TransactionSubsystem.Entities;
 using System;
+using System.Text;
+using TransactionSubsystem.Infrastructure.Exceptions;
 using TransactionSubsystem.Infrastructure.Repositories.Abstract;
 using TransactionSubsystem.Infrastructure.Services.Abstract;
 
@@ -20,39 +22,43 @@ namespace TransactionSubsystem.Infrastructure.Services.Implementation
             _securityService = securityService;
         }
 
-        public User CurrentUser
-        {
-            get
-            {
-                return _currentUser;
-            }
-            set
-            {
-                _currentUser = value;
-            }
+        //public User CurrentUser
+        //{
+        //    get
+        //    {
+        //        return _currentUser;
+        //    }
+        //    set
+        //    {
+        //        _currentUser = value;
+        //    }
 
-        }
+        //}
 
-        public Task<bool> Login(string email, string password)
+        public string Login(string email, string password)
         {
             if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException(email);
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException(password);
 
-            return Task.Run(() => LoginInternal(email, password));
-        }
-
-        private bool LoginInternal(string email, string password)
-        {
-            bool loginResult = false;
+            string authIdentifier;
 
             _currentUser = _userRepository.GetSingle(x => x.Email == email);
             if (_currentUser != null && isPasswordValid(_currentUser, password))
             {
-                //_currentUser.PrepareNewTransaction();
-                loginResult = true;
+                authIdentifier = Convert.ToBase64String(Encoding.UTF8.GetBytes(_currentUser.Name));
+            }
+            else
+            {
+                _currentUser = null;
+                throw new TransactionSubsystemException("Invalid credentials");
             }
 
-            return loginResult;
+            return authIdentifier;
+        }
+
+        public void LogOut()
+        {
+            //_currentUser = null;
         }
 
         private bool isPasswordValid(User user, string password)

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using TransactionSubsystem.Entities;
 using System.Collections.Generic;
 using TransactionSubsystem.Infrastructure.Exceptions;
@@ -26,22 +25,17 @@ namespace TransactionSubsystem.Infrastructure.Services.Implementation
             return _userRepository.GetSingle(x => x.Name == userName);
         }
 
-        public Task<IEnumerable<User>> GetUsers()
+        public IEnumerable<User> GetUsers()
         {
-            return Task.Run(() => _userRepository.GetAll());
+            return _userRepository.GetAll();
         }
 
-        public Task<User> CreateUser(string userName, string email, string password)
+        public User CreateUser(string userName, string email, string password)
         {
             if (string.IsNullOrWhiteSpace(userName)) throw new ArgumentException(userName);
             if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException(email);
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException(password);
 
-            return Task.Run(() => CreateUserInternal(userName, email, password));
-        }
-
-        private User CreateUserInternal(string userName, string email, string password)
-        {
             var existingUser = _userRepository.GetSingle(x => x.Email == email);
 
             if (existingUser != null)

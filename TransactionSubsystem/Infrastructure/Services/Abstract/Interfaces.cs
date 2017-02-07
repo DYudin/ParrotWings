@@ -7,17 +7,18 @@ namespace TransactionSubsystem.Infrastructure.Services.Abstract
 {
     public interface IAuthenticationService
     {
-        User CurrentUser { get; set; }
+        //User CurrentUser { get; set; }
 
-        Task<bool> Login(string email, string password);
+        string Login(string email, string password);
+        void LogOut();
     }
 
     public interface IUserProvider
     {
-        Task<User> CreateUser(string username, string email, string password);
+        User CreateUser(string username, string email, string password);
         User GetUser(int userId);
         User GetUserByName(string userName);
-        Task<IEnumerable<User>> GetUsers();
+        IEnumerable<User> GetUsers();
     }    
 
     public interface ITransactionService
